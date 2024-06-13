@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: taskTracker
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5434/tasks
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
