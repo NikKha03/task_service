@@ -13,17 +13,17 @@ public class TaskController {
 
     private final TaskService service;
 
-    @PostMapping
-    public Task createNewTask(Task task) {
+    @PostMapping("create_task")
+    public Task createNewTask(@RequestBody Task task) {
         return service.createNewTask(task);
     }
 
-    @DeleteMapping
-    public void deleteTask(Task task) {
+    @DeleteMapping("delete_task")
+    public void deleteTask(@RequestBody Task task) {
         service.deleteTask(task);
     }
 
-    @PutMapping
+    @PutMapping("change_task")
     public Task changeTask(@RequestBody Task task) {
         return service.changeTask(task);
     }
