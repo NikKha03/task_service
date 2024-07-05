@@ -16,9 +16,8 @@ public class InMemoryTaskDAO {
         return task;
     }
 
-    public String deleteTask(Task task) {
+    public void deleteTask(Task task) {
         TASKS.remove(task);
-        return "Задача была успешно удалена";
     }
 
     public Task changeTask(Task task) {
@@ -32,7 +31,7 @@ public class InMemoryTaskDAO {
         return task;
     }
 
-    public List<Task> getTasks() {
+    public List<Task> getAllTasks() {
         return TASKS;
     }
 }

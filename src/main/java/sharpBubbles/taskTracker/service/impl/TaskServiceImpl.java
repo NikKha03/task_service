@@ -18,7 +18,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getAllTasks() {
-        return repository.getAllTask();
+        return repository.findAll();
     }
 
     @Override

@@ -20,11 +20,7 @@ public class Task {
 
     private String comment;
 
-    // Если реализовывать командную работу
     private Long owner;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Status status;
 
     private LocalDateTime dateTimeOfTask;
 
