@@ -1,6 +1,9 @@
 spring:
   application:
     name: taskTracker
+  mvc:
+    format:
+      date: yyyy-MM-dd HH:mm
   jpa:
     hibernate:
       ddl-auto: create-drop

@@ -3,7 +3,9 @@ package sharpBubbles.taskTracker.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 
 @Data
@@ -22,8 +24,10 @@ public class Task {
 
     private Long owner;
 
-    private LocalDateTime dateTimeOfTask;
+    @Temporal(TemporalType.DATE)
+    private LocalDate dateOfTask;
 
-    private LocalDateTime deadLineOfTask;
+    @Temporal(TemporalType.TIME)
+    private LocalTime timeOfTask;
 
 }
