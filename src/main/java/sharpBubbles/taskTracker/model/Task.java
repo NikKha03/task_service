@@ -3,7 +3,8 @@ package sharpBubbles.taskTracker.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.Period;
+import java.time.LocalDateTime;
+
 
 @Data
 @Entity
@@ -25,9 +26,8 @@ public class Task {
     @ManyToOne(cascade = CascadeType.ALL)
     private Status status;
 
-    private Period period;
+    private LocalDateTime dateTimeOfTask;
 
-    private double expectedHoursPerTask;
+    private LocalDateTime deadLineOfTask;
 
-    private double actualHoursPerTask;
 }
