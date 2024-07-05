@@ -16,8 +16,13 @@ public class InMemoryTaskDAO {
         return task;
     }
 
-    public void deleteTask(Task task) {
-        TASKS.remove(task);
+    public void deleteTask(Long taskId) {
+        for (int i = 0; i < TASKS.size(); i++) {
+            if (TASKS.get(i).getTaskId() == taskId) {
+                TASKS.remove(i);
+                break;
+            }
+        }
     }
 
     public Task changeTask(Task task) {

@@ -21,8 +21,8 @@ public class InMemoryTaskService implements TaskService {
     }
 
     @Override
-    public void deleteTask(Task task) {
-        repository.deleteTask(task);
+    public void deleteTask(Long taskId) {
+        repository.deleteTask(taskId);
     }
 
     @Override

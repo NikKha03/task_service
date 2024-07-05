@@ -1,6 +1,7 @@
 package sharpBubbles.taskTracker.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import sharpBubbles.taskTracker.model.Task;
 import sharpBubbles.taskTracker.service.TaskService;
@@ -18,9 +19,10 @@ public class TaskController {
         return service.createNewTask(task);
     }
 
-    @DeleteMapping("delete_task")
-    public void deleteTask(@RequestBody Task task) {
-        service.deleteTask(task);
+    @Transactional
+    @DeleteMapping("delete_task/{taskId}")
+    public void deleteTask(@PathVariable("taskId") Long taskId) {
+        service.deleteTask(taskId);
     }
 
     @PutMapping("change_task")

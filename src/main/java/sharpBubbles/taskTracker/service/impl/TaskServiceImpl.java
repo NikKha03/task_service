@@ -1,5 +1,6 @@
 package sharpBubbles.taskTracker.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,12 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public void deleteTask(Task task) {
-        repository.delete(task);
+    public void deleteTask(Long taskId) {
+        repository.deleteTaskByTaskId(taskId);
     }
 
     @Override
+    @Transactional
     public Task changeTask(Task task) {
         return repository.save(task);
     }
