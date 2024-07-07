@@ -1,11 +1,10 @@
 package sharpBubbles.taskTracker.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -25,10 +24,13 @@ public class Task {
     @NotNull
     private Long owner;
 
-    @Temporal(TemporalType.DATE)
-    private LocalDate dateOfTask;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime dateTimeOfTask;
 
-    @Temporal(TemporalType.TIME)
-    private LocalTime timeOfTask;
+    private Status status;
 
+    public enum Status {
+        IN_PROGRESS,
+        COMPLETED;
+    }
 }

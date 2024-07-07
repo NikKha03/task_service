@@ -15,3 +15,8 @@ spring:
     username: postgres
     password: admin
     driver-class-name: org.postgresql.Driver
+server:
+  port: 8080
+frontend:
+  host: http://25.68.40.138:5173
+  login-page: http://25.68.40.138:5173/task-tracker/auth/login
