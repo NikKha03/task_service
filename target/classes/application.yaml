@@ -6,7 +6,7 @@ spring:
       date: yyyy-MM-dd HH:mm
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true

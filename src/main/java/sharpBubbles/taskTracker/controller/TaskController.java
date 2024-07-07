@@ -34,4 +34,9 @@ public class TaskController {
     public List<Task> getAllTasks() {
         return service.getAllTasks();
     }
+
+    @GetMapping("/{taskId}")
+    public Task getTaskByTaskId(@PathVariable("taskId") Long taskid) {
+        return service.findTaskByTaskId(taskid);
+    }
 }

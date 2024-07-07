@@ -1,6 +1,7 @@
 package sharpBubbles.taskTracker.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class Task {
 
     private String comment;
 
+    @NotNull
     private Long owner;
 
     @Temporal(TemporalType.DATE)

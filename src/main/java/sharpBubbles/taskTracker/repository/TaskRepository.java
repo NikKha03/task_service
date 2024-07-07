@@ -5,4 +5,5 @@ import sharpBubbles.taskTracker.model.Task;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
     void deleteTaskByTaskId(Long taskId);
+    Task findTaskByTaskId(Long taskId);
 }

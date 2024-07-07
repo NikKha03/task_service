@@ -39,4 +39,14 @@ public class InMemoryTaskDAO {
     public List<Task> getAllTasks() {
         return TASKS;
     }
+
+    public Task findTaskByTaskId(Long id) {
+        for (int i = 0; i < TASKS.size(); i++) {
+            if (TASKS.get(i).getTaskId() == id) {
+                return TASKS.get(i);
+            }
+        }
+        return null;
+    }
+
 }

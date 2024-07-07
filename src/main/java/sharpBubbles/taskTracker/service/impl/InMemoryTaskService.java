@@ -35,4 +35,8 @@ public class InMemoryTaskService implements TaskService {
         return repository.getAllTasks();
     }
 
+    public Task findTaskByTaskId(Long id) {
+        return repository.findTaskByTaskId(id);
+    }
+
 }

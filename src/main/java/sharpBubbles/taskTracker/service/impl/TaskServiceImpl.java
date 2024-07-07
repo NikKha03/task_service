@@ -43,4 +43,8 @@ public class TaskServiceImpl implements TaskService {
     public Task updateTask(Task task) {
         return repository.save(task);
     }
+
+    public Task findTaskByTaskId(Long id) {
+        return repository.findTaskByTaskId(id);
+    }
 }
