@@ -36,8 +36,14 @@ public class InMemoryTaskDAO {
         return task;
     }
 
-    public List<Task> getAllTasks() {
-        return TASKS;
+    public List<Task> getAllTasks(Long owner) {
+        List<Task> result = new ArrayList<>();
+        for (int i = 0; i < TASKS.size(); i++) {
+            if (TASKS.get(i).getOwner() == owner) {
+                result.add(TASKS.get(i));
+            }
+        }
+        return result;
     }
 
     public Task findTaskByTaskId(Long id) {

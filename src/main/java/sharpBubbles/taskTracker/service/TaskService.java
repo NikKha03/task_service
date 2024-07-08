@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    List<Task> getAllTasks();
+    List<Task> getAllTasks(Long owner);
     Task createNewTask(Task task);
     void deleteTask(Long taskId);
     Task changeTask(Task task);

@@ -18,8 +18,8 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository repository;
 
     @Override
-    public List<Task> getAllTasks() {
-        return repository.findAll();
+    public List<Task> getAllTasks(Long owner) {
+        return repository.getAllTasks(owner);
     }
 
     @Override

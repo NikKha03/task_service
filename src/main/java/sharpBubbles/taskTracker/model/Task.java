@@ -3,6 +3,7 @@ package sharpBubbles.taskTracker.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -10,8 +11,9 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "tasks")
+
 public class Task {
-    public Task() {}
+    public Task(Long taskId, String header, String comment, Long owner, LocalDateTime dateTime, Status status) {}
 
     @Id
     @GeneratedValue

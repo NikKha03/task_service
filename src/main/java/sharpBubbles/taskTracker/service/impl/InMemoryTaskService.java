@@ -31,8 +31,8 @@ public class InMemoryTaskService implements TaskService {
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return repository.getAllTasks();
+    public List<Task> getAllTasks(Long owner) {
+        return repository.getAllTasks(owner);
     }
 
     public Task findTaskByTaskId(Long id) {
