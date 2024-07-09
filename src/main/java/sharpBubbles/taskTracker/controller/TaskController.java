@@ -23,10 +23,11 @@ public class TaskController {
 
     @PostMapping("{owner}/create")
     public Task createNewTask(@RequestBody TaskRequest request, @PathVariable("owner") Long owner) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String header = request.getHeader();
         Long taskId = request.getTaskId();
         String comment = request.getComment();
-        LocalDateTime dateTime = request.getDateTimeOfTask();
+        LocalDateTime dateTime = LocalDateTime.parse(request.getDateTimeOfTask(), formatter);
         Task newTask = new Task(taskId, header, comment, owner, dateTime, Task.Status.IN_PROGRESS);
         return service.createNewTask(newTask);
     }
@@ -40,9 +41,11 @@ public class TaskController {
     @Transactional
     @PutMapping("{owner}/change/{taskId}")
     public Task changeTask(@RequestBody TaskRequest request, @PathVariable("owner") Long owner, @PathVariable("taskId") Long taskId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String header = request.getHeader();
         String comment = request.getComment();
-        Task newTask = new Task(taskId, header, comment, owner, request.getDateTimeOfTask(), Task.Status.IN_PROGRESS);
+        LocalDateTime dateTime = LocalDateTime.parse(request.getDateTimeOfTask(), formatter);
+        Task newTask = new Task(taskId, header, comment, owner, dateTime, Task.Status.IN_PROGRESS);
         return service.changeTask(newTask);
     }
 

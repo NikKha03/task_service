@@ -23,10 +23,6 @@ public class TaskRequest {
 
     private String comment;
 
-    @NotNull
-    private Long owner;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime dateTimeOfTask;
+    private String dateTimeOfTask;
 
 }
