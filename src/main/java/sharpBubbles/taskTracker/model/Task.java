@@ -13,7 +13,15 @@ import java.time.LocalDateTime;
 @Table(name = "tasks")
 
 public class Task {
-    public Task(Long taskId, String header, String comment, Long owner, LocalDateTime dateTime, Status status) {}
+    public Task(Long taskId, String header, String comment, Long owner, LocalDateTime dateTime, Status status) {
+        this.taskId = taskId;
+        this.header = header;
+        this.comment = comment;
+        this.owner = owner;
+        this.dateTimeOfTask = dateTime;
+        this.status = status;
+    }
+    public Task() {}
 
     @Id
     @GeneratedValue
@@ -26,7 +34,7 @@ public class Task {
     @NotNull
     private Long owner;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime dateTimeOfTask;
 
     private Status status;

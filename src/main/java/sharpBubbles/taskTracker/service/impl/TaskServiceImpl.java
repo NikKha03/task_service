@@ -19,7 +19,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getAllTasks(Long owner) {
-        return repository.getAllTasks(owner);
+        return repository.getAllTasksByOwner(owner);
     }
 
     @Override
@@ -34,12 +34,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    @Transactional
     public Task changeTask(Task task) {
         return repository.save(task);
     }
 
-
+    @Transactional
     public Task updateTask(Task task) {
         return repository.save(task);
     }
