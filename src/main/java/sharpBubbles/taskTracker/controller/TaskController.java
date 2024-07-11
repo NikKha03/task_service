@@ -44,8 +44,19 @@ public class TaskController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String header = request.getHeader();
         String comment = request.getComment();
-        LocalDateTime dateTime = LocalDateTime.parse(request.getDateTimeOfTask(), formatter);
-        Task newTask = new Task(taskId, header, comment, owner, dateTime, Task.Status.IN_PROGRESS);
+        String strDate = request.getDateTimeOfTask();
+        Task newTask = new Task();
+        newTask.setOwner(owner);
+        newTask.setTaskId(taskId);
+        if (header != null)
+            newTask.setHeader(header);
+        if (comment != null)
+            newTask.setComment(comment);
+        if (strDate != null) {
+            LocalDateTime dateTime = LocalDateTime.parse(strDate, formatter);
+            newTask.setDateTimeOfTask(dateTime);
+        }
+
         return service.changeTask(newTask);
     }
 

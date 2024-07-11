@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import sharpBubbles.taskTracker.model.Task;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +24,10 @@ public class TaskRequest {
 
     private String comment;
 
+    private Long owner;
+
     private String dateTimeOfTask;
+
+    private Task.Status status;
 
 }

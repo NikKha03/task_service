@@ -28,6 +28,12 @@ public class InMemoryTaskDAO {
     public Task changeTask(Task task) {
         for (int i = 0; i < TASKS.size(); i++) {
             if (TASKS.get(i).getTaskId() == task.getTaskId()) {
+                if (task.getHeader() == null)
+                    task.setHeader(TASKS.get(i).getHeader());
+                if (task.getComment() == null)
+                    task.setComment(TASKS.get(i).getComment());
+                if (task.getDateTimeOfTask() == null)
+                    task.setDateTimeOfTask(TASKS.get(i).getDateTimeOfTask());
                 TASKS.remove(i);
                 TASKS.add(task);
                 break;
