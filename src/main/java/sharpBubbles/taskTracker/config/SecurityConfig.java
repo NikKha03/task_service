@@ -23,10 +23,6 @@ public class SecurityConfig {
     @Value("${frontend.host}")
     private String frontendHost;
 
-    @Value("${frontend.login-page}")
-    private String frontendLoginPage;
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,10 +30,9 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(" http://25.35.252.236:8080/api/**").permitAll()
                         .anyRequest().permitAll())
                 .formLogin(login -> login
-                        .loginPage(frontendLoginPage));
+                        .loginPage(frontendHost + "/task-tracker/auth/login"));
 
         return http.build();
     }
@@ -46,7 +41,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // configuration.setAllowedOrigins(List.of(frontendHost, "http://localhost:8080", "http://25.68.40.138:8090"));
+        configuration.setAllowedOrigins(List.of(frontendHost));
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
@@ -57,5 +52,4 @@ public class SecurityConfig {
 
         return urlBasedCorsConfigurationSource;
     }
-
 }

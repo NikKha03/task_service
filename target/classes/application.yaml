@@ -16,12 +16,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5438/tasks
+    url: jdbc:postgresql://localhost:5434/tasks
     username: postgres
-    password: admin
+    password: postgres
     driver-class-name: org.postgresql.Driver
 server:
   port: 8080
 frontend:
-  host: http://25.68.40.138:5173
-  login-page: http://25.68.40.138:5173/task-tracker/auth/login
+  host: http://localhost:5173

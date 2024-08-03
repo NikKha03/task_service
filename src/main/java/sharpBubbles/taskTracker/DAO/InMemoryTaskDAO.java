@@ -10,8 +10,7 @@ import java.util.List;
 public class InMemoryTaskDAO {
     public final List<Task> TASKS = new ArrayList<>();
 
-
-    public Task createNewTask(Task task) {
+    public Task creatTask(Task task) {
         TASKS.add(task);
         return task;
     }

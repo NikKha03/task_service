@@ -1,72 +1,68 @@
 package sharpBubbles.taskTracker.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import sharpBubbles.taskTracker.DTO.TaskRequest;
 import sharpBubbles.taskTracker.model.Task;
+import sharpBubbles.taskTracker.model.TaskBuilder;
+import sharpBubbles.taskTracker.model.TaskStatus;
 import sharpBubbles.taskTracker.service.TaskService;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("task-tracker/tasks")
+@RequestMapping("task-tracker/tasks/{owner}")
 public class TaskController {
 
     private final TaskService service;
 
-    @PostMapping("{owner}/create")
-    public Task createNewTask(@RequestBody TaskRequest request, @PathVariable("owner") Long owner) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String header = request.getHeader();
-        Long taskId = request.getTaskId();
-        String comment = request.getComment();
-        LocalDateTime dateTime = LocalDateTime.parse(request.getDateTimeOfTask(), formatter);
-        Task newTask = new Task(taskId, header, comment, owner, dateTime, Task.Status.IN_PROGRESS);
-        return service.createNewTask(newTask);
-    }
-
-    @Transactional
-    @DeleteMapping("{owner}/delete/{taskId}")
-    public void deleteTask(@PathVariable("taskId") Long taskId) {
-        service.deleteTask(taskId);
-    }
-
-    @Transactional
-    @PutMapping("{owner}/change/{taskId}")
-    public Task changeTask(@RequestBody TaskRequest request, @PathVariable("owner") Long owner, @PathVariable("taskId") Long taskId) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String header = request.getHeader();
-        String comment = request.getComment();
-        String strDate = request.getDateTimeOfTask();
-        Task newTask = new Task();
-        newTask.setOwner(owner);
-        newTask.setTaskId(taskId);
-        if (header != null)
-            newTask.setHeader(header);
-        if (comment != null)
-            newTask.setComment(comment);
-        if (strDate != null) {
-            LocalDateTime dateTime = LocalDateTime.parse(strDate, formatter);
-            newTask.setDateTimeOfTask(dateTime);
-        }
-
-        return service.changeTask(newTask);
-    }
-
-    @GetMapping("{owner}")
+    @GetMapping()
     public List<Task> getAllTasks(@PathVariable("owner") Long owner) {
         return service.getAllTasks(owner);
     }
 
-    @GetMapping("{owner}/{taskId}")
+    @GetMapping("/{taskId}")
     public Task getTaskByTaskId(@PathVariable("taskId") Long taskId) {
         return service.findTaskByTaskId(taskId);
+    }
+
+    @PostMapping("/create")
+    public Task createTask(@PathVariable("owner") Long owner, @RequestBody TaskRequest request) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDateTimeOfTask(), formatter);
+
+        Task task = new TaskBuilder()
+                .setTaskId(request.getTaskId())
+                .setHeader(request.getHeader())
+                .setComment(request.getComment())
+                .setOwner(owner)
+                .setDateTimeOfTask(dateTimeOfTask)
+                .setTaskStatus(TaskStatus.IN_PROGRESS)
+                .build();
+
+        return service.createTask(task);
+    }
+
+    @Transactional
+    @PutMapping("/change/{taskId}")
+    public Task changeTask(@PathVariable("owner") Long owner, @PathVariable("taskId") Long taskId, @RequestBody TaskRequest request) {
+        Task neweTask = new TaskBuilder()
+                .setTaskId(taskId)
+                .setHeader(request.getHeader())
+                .setComment(request.getComment())
+                .setOwner(owner)
+                .build();
+
+        return service.changeTask(neweTask);
+    }
+
+    @Transactional
+    @DeleteMapping("/delete/{taskId}")
+    public void deleteTask(@PathVariable("taskId") Long taskId) {
+        service.deleteTask(taskId);
     }
 }

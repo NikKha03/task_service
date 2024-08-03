@@ -23,7 +23,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task createNewTask(Task task) {
+    public Task createTask(Task task) {
         return repository.save(task);
     }
 

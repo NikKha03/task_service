@@ -16,8 +16,8 @@ public class InMemoryTaskService implements TaskService {
     private final InMemoryTaskDAO repository;
 
     @Override
-    public Task createNewTask(Task task) {
-        return repository.createNewTask(task);
+    public Task createTask(Task task) {
+        return repository.creatTask(task);
     }
 
     @Override

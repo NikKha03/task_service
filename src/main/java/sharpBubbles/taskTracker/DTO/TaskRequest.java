@@ -1,15 +1,11 @@
 package sharpBubbles.taskTracker.DTO;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import sharpBubbles.taskTracker.model.Task;
-
-import java.time.LocalDateTime;
+import sharpBubbles.taskTracker.model.TaskStatus;
 
 @AllArgsConstructor
 @Setter
@@ -28,6 +24,6 @@ public class TaskRequest {
 
     private String dateTimeOfTask;
 
-    private Task.Status status;
+    private TaskStatus taskStatus;
 
 }
