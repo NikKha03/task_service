@@ -50,11 +50,15 @@ public class TaskController {
     @Transactional
     @PutMapping("/change/{taskId}")
     public Task changeTask(@PathVariable("owner") Long owner, @PathVariable("taskId") Long taskId, @RequestBody TaskRequest request) {
-        Task neweTask = new TaskBuilder()
-                .setTaskId(taskId)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDateTimeOfTask(), formatter);
+
+        Task task = service.findTaskByTaskId(taskId);
+
+        Task neweTask = new TaskBuilder(task)
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
-                .setOwner(owner)
+                .setDateTimeOfTask(dateTimeOfTask)
                 .build();
 
         return service.changeTask(neweTask);

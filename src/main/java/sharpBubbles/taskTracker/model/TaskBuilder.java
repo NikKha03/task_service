@@ -3,9 +3,14 @@ package sharpBubbles.taskTracker.model;
 import java.time.LocalDateTime;
 
 public class TaskBuilder {
-    private final Task task = new Task();
+    private final Task task;
 
     public TaskBuilder() {
+        this.task = new Task();
+    }
+
+    public TaskBuilder(Task task) {
+        this.task = task;
     }
 
     public TaskBuilder setTaskId(Long taskId) {
