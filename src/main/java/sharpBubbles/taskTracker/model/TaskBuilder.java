@@ -33,8 +33,8 @@ public class TaskBuilder {
         return this;
     }
 
-    public TaskBuilder setDateTimeOfTask(LocalDateTime dateTimeOfTask) {
-        task.setDateTimeOfTask(dateTimeOfTask);
+    public TaskBuilder setDatePlannedImplementation(LocalDateTime dateTimeOfTask) {
+        task.setDatePlannedImplementation(dateTimeOfTask);
         return this;
     }
 

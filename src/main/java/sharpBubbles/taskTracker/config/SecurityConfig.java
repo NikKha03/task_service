@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -19,7 +20,6 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-
     @Value("${frontend.host}")
     private String frontendHost;
 
@@ -29,8 +29,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+                .sessionManagement(sessionManagement -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .anyRequest().permitAll())
+                        .requestMatchers("/taskServiceApi/**").permitAll())
                 .formLogin(login -> login
                         .loginPage(frontendHost + "/task-tracker/auth/login"));
 
@@ -42,7 +44,6 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(frontendHost));
-        configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

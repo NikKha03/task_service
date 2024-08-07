@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import sharpBubbles.taskTracker.model.Task;
+import sharpBubbles.taskTracker.model.TaskStatus;
 import sharpBubbles.taskTracker.repository.TaskRepository;
 import sharpBubbles.taskTracker.service.TaskService;
 
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -23,10 +25,36 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Task> getCompletedTasks(Long owner) {
+        return repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.COMPLETED).stream()
+                .sorted(Comparator.comparing(Task::getExecutionDate))
+                .toList();
+    }
+
+    @Override
+    public List<Task> getInProgressTasksWithDatePlannedImplementation(Long owner) {
+        List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
+
+        return tasks.stream()
+                .filter(task -> task.getDatePlannedImplementation() != null)
+                .sorted(Comparator.comparing(Task::getCreationDate))
+                .toList();
+    }
+
+    @Override
+    public List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner) {
+        List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
+
+        return tasks.stream()
+                .filter(task -> task.getDatePlannedImplementation() == null)
+                .sorted(Comparator.comparing(Task::getCreationDate))
+                .toList();
+    }
+
+    @Override
     public Task createTask(Task task) {
         return repository.save(task);
     }
-
 
     @Override
     public void deleteTask(Long taskId) {

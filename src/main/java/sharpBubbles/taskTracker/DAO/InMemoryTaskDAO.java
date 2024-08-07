@@ -31,8 +31,8 @@ public class InMemoryTaskDAO {
                     task.setHeader(TASKS.get(i).getHeader());
                 if (task.getComment() == null)
                     task.setComment(TASKS.get(i).getComment());
-                if (task.getDateTimeOfTask() == null)
-                    task.setDateTimeOfTask(TASKS.get(i).getDateTimeOfTask());
+                if (task.getDatePlannedImplementation() == null)
+                    task.setDatePlannedImplementation(TASKS.get(i).getDatePlannedImplementation());
                 TASKS.remove(i);
                 TASKS.add(task);
                 break;

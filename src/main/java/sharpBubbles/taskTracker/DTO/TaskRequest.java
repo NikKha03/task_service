@@ -22,7 +22,7 @@ public class TaskRequest {
 
     private Long owner;
 
-    private String dateTimeOfTask;
+    private String datePlannedImplementation;
 
     private TaskStatus taskStatus;
 

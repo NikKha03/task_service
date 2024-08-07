@@ -25,7 +25,13 @@ public class Task {
     private Long owner;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime dateTimeOfTask;
+    private LocalDateTime creationDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime executionDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime datePlannedImplementation;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;

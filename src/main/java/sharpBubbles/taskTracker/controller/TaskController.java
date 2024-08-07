@@ -15,58 +15,77 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("task-tracker/tasks/{owner}")
+@RequestMapping("/taskServiceApi/{ownerId}")
 public class TaskController {
 
-    private final TaskService service;
+    private final TaskService taskService;
 
-    @GetMapping()
-    public List<Task> getAllTasks(@PathVariable("owner") Long owner) {
-        return service.getAllTasks(owner);
+    @GetMapping("/allTasks")
+    public List<Task> getAllTasks(@PathVariable("ownerId") Long ownerId) {
+        return taskService.getAllTasks(ownerId);
     }
 
-    @GetMapping("/{taskId}")
-    public Task getTaskByTaskId(@PathVariable("taskId") Long taskId) {
-        return service.findTaskByTaskId(taskId);
+    @GetMapping("/allCompletedTasks")
+    public List<Task> getCompletedTask(@PathVariable("ownerId") Long ownerId) {
+        return taskService.getCompletedTasks(ownerId);
     }
 
-    @PostMapping("/create")
-    public Task createTask(@PathVariable("owner") Long owner, @RequestBody TaskRequest request) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDateTimeOfTask(), formatter);
+    @GetMapping("/allInProgressTasksWithDatePlannedImplementation")
+    public List<Task> getInProgressTaskWithDatePlannedImplementation(@PathVariable("ownerId") Long ownerId) {
+        return taskService.getInProgressTasksWithDatePlannedImplementation(ownerId);
+    }
 
-        Task task = new TaskBuilder()
+    @GetMapping("/allInProgressTasksWithoutDatePlannedImplementation")
+    public List<Task> getInProgressTaskWithoutDatePlannedImplementation(@PathVariable("ownerId") Long ownerId) {
+        return taskService.getInProgressTasksWithoutDatePlannedImplementation(ownerId);
+    }
+
+    @PostMapping("/createTask")
+    public Task createTask(@PathVariable("ownerId") Long ownerId, @RequestBody TaskRequest request) {
+        TaskBuilder taskBuilder = new TaskBuilder()
                 .setTaskId(request.getTaskId())
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
-                .setOwner(owner)
-                .setDateTimeOfTask(dateTimeOfTask)
-                .setTaskStatus(TaskStatus.IN_PROGRESS)
-                .build();
+                .setOwner(ownerId)
+                .setTaskStatus(TaskStatus.IN_PROGRESS);
 
-        return service.createTask(task);
+        if (request.getDatePlannedImplementation() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDatePlannedImplementation(), formatter);
+            taskBuilder.setDatePlannedImplementation(dateTimeOfTask);
+        }
+
+        return taskService.createTask(taskBuilder.build());
     }
 
     @Transactional
-    @PutMapping("/change/{taskId}")
-    public Task changeTask(@PathVariable("owner") Long owner, @PathVariable("taskId") Long taskId, @RequestBody TaskRequest request) {
+    @PutMapping("/changeTask/{taskId}")
+    public Task changeTask(@PathVariable("ownerId") Long ownerId, @PathVariable("taskId") Long taskId, @RequestBody TaskRequest request) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDateTimeOfTask(), formatter);
+        LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDatePlannedImplementation(), formatter);
 
-        Task task = service.findTaskByTaskId(taskId);
+        Task task = taskService.findTaskByTaskId(taskId);
 
         Task neweTask = new TaskBuilder(task)
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
-                .setDateTimeOfTask(dateTimeOfTask)
+                .setDatePlannedImplementation(dateTimeOfTask)
                 .build();
 
-        return service.changeTask(neweTask);
+        return taskService.changeTask(neweTask);
     }
 
     @Transactional
-    @DeleteMapping("/delete/{taskId}")
-    public void deleteTask(@PathVariable("taskId") Long taskId) {
-        service.deleteTask(taskId);
+    @DeleteMapping("/deleteTask/{taskId}")
+    public void deleteTask(@PathVariable("ownerId") Long ownerId, @PathVariable("taskId") Long taskId) {
+        taskService.deleteTask(taskId);
+    }
+
+    @PutMapping("/changeTaskStatusOnCompleted/{taskId}")
+    public Task changeTaskStatus(@PathVariable("ownerId") Long ownerId, @PathVariable("taskId") Long taskId) {
+        Task task = taskService.findTaskByTaskId(taskId);
+        task.setTaskStatus(TaskStatus.COMPLETED);
+
+        return taskService.changeTask(task);
     }
 }
