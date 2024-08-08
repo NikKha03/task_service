@@ -14,4 +14,7 @@ INSERT INTO tasks (task_id, comment, creation_date, date_planned_implementation,
 
 
 INSERT INTO tasks (task_id, comment, creation_date, date_planned_implementation, execution_date, header, owner, task_status)
-    VALUES (5, null, '2024-08-07 14:20', '2024-08-07', null, 'Сходить в душ', 1, 'IN_PROGRESS');
+    VALUES (5, null, '2024-08-07 14:25', '2024-08-07 11:15', null, 'Сходить в душ', 1, 'IN_PROGRESS');
+
+INSERT INTO tasks (task_id, comment, creation_date, date_planned_implementation, execution_date, header, owner, task_status)
+VALUES (6, null, '2024-08-07 14:30', '2024-08-07 11:10', null, 'Сходить в туалет', 1, 'IN_PROGRESS');

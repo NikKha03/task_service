@@ -61,18 +61,21 @@ public class TaskController {
     @Transactional
     @PutMapping("/changeTask/{taskId}")
     public Task changeTask(@PathVariable("ownerId") Long ownerId, @PathVariable("taskId") Long taskId, @RequestBody TaskRequest request) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDatePlannedImplementation(), formatter);
-
         Task task = taskService.findTaskByTaskId(taskId);
 
-        Task neweTask = new TaskBuilder(task)
+        TaskBuilder taskBuilder = new TaskBuilder(task)
                 .setHeader(request.getHeader())
-                .setComment(request.getComment())
-                .setDatePlannedImplementation(dateTimeOfTask)
-                .build();
+                .setComment(request.getComment());
 
-        return taskService.changeTask(neweTask);
+        if (request.getDatePlannedImplementation() != null && request.getDatePlannedImplementation().length() >= 10) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDatePlannedImplementation(), formatter);
+            taskBuilder.setDatePlannedImplementation(dateTimeOfTask);
+        } else {
+            taskBuilder.setDatePlannedImplementation(null);
+        }
+
+        return taskService.changeTask(taskBuilder.build());
     }
 
     @Transactional
@@ -84,6 +87,9 @@ public class TaskController {
     @PutMapping("/changeTaskStatusOnCompleted/{taskId}")
     public Task changeTaskStatus(@PathVariable("ownerId") Long ownerId, @PathVariable("taskId") Long taskId) {
         Task task = taskService.findTaskByTaskId(taskId);
+
+        LocalDateTime time = LocalDateTime.now();
+        task.setExecutionDate(time);
         task.setTaskStatus(TaskStatus.COMPLETED);
 
         return taskService.changeTask(task);
