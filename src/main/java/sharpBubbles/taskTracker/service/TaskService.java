@@ -10,7 +10,11 @@ public interface TaskService {
 
     List<Task> getCompletedTasks(Long owner);
 
-    List<Task> getInProgressTasksWithDatePlannedImplementation(Long owner);
+    List<Task> getTasksOnTheDay(Long owner);
+
+    List<Task> getTasksOnOtherDays(Long owner);
+
+    List<Task> getTasksIncomplete(Long owner);
 
     List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner);
 

@@ -30,9 +30,19 @@ public class TaskController {
         return taskService.getCompletedTasks(ownerId);
     }
 
-    @GetMapping("/allInProgressTasksWithDatePlannedImplementation")
-    public List<Task> getInProgressTaskWithDatePlannedImplementation(@PathVariable("ownerId") Long ownerId) {
-        return taskService.getInProgressTasksWithDatePlannedImplementation(ownerId);
+    @GetMapping("/tasksOnTheDay")
+    public List<Task> getTasksOnTheDay(@PathVariable("ownerId") Long ownerId) {
+        return taskService.getTasksOnTheDay(ownerId);
+    }
+
+    @GetMapping("/tasksOnOtherDays")
+    public List<Task> getTasksOnOtherDays(@PathVariable("ownerId") Long ownerId) {
+        return taskService.getTasksOnOtherDays(ownerId);
+    }
+
+    @GetMapping("/tasksIncomplete")
+    public List<Task> getTasksIncomplete(@PathVariable("ownerId") Long ownerId) {
+        return taskService.getTasksIncomplete(ownerId);
     }
 
     @GetMapping("/allInProgressTasksWithoutDatePlannedImplementation")
@@ -47,7 +57,9 @@ public class TaskController {
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
                 .setOwner(ownerId)
-                .setTaskStatus(TaskStatus.IN_PROGRESS);
+                .setTaskStatus(TaskStatus.IN_PROGRESS)
+                .setCreationDate();
+
 
         if (request.getDatePlannedImplementation() != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -85,12 +97,21 @@ public class TaskController {
     }
 
     @PutMapping("/changeTaskStatusOnCompleted/{taskId}")
-    public Task changeTaskStatus(@PathVariable("ownerId") Long ownerId, @PathVariable("taskId") Long taskId) {
+    public Task changeTaskStatusOnCompleted(@PathVariable("ownerId") Long ownerId, @PathVariable("taskId") Long taskId) {
         Task task = taskService.findTaskByTaskId(taskId);
 
-        LocalDateTime time = LocalDateTime.now();
-        task.setExecutionDate(time);
+        task.setExecutionDate(LocalDateTime.now());
         task.setTaskStatus(TaskStatus.COMPLETED);
+
+        return taskService.changeTask(task);
+    }
+
+    @PutMapping("/changeTaskStatusOnInProgress/{taskId}")
+    public Task changeTaskStatusOnInProgress(@PathVariable("ownerId") Long ownerId, @PathVariable("taskId") Long taskId) {
+        Task task = taskService.findTaskByTaskId(taskId);
+
+        task.setExecutionDate(null);
+        task.setTaskStatus(TaskStatus.IN_PROGRESS);
 
         return taskService.changeTask(task);
     }

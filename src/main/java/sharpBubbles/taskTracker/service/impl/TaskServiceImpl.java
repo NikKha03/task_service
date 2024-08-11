@@ -1,6 +1,5 @@
 package sharpBubbles.taskTracker.service.impl;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -9,6 +8,7 @@ import sharpBubbles.taskTracker.model.TaskStatus;
 import sharpBubbles.taskTracker.repository.TaskRepository;
 import sharpBubbles.taskTracker.service.TaskService;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
@@ -27,16 +27,36 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getCompletedTasks(Long owner) {
         return repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.COMPLETED).stream()
-                .sorted(Comparator.comparing(Task::getExecutionDate))
+                .sorted(Comparator.comparing(Task::getExecutionDate).reversed())
                 .toList();
     }
 
     @Override
-    public List<Task> getInProgressTasksWithDatePlannedImplementation(Long owner) {
+    public List<Task> getTasksOnTheDay(Long owner) {
         List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
 
         return tasks.stream()
-                .filter(task -> task.getDatePlannedImplementation() != null)
+                .filter(task -> task.getDatePlannedImplementation() != null && LocalDate.now().equals(task.getDatePlannedImplementation().toLocalDate()))
+                .sorted(Comparator.comparing(Task::getCreationDate).reversed())
+                .toList();
+    }
+
+    @Override
+    public List<Task> getTasksOnOtherDays(Long owner) {
+        List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
+
+        return tasks.stream()
+                .filter(task -> task.getDatePlannedImplementation() != null && task.getDatePlannedImplementation().toLocalDate().isAfter(LocalDate.now()))
+                .sorted(Comparator.comparing(Task::getCreationDate))
+                .toList();
+    }
+
+    @Override
+    public List<Task> getTasksIncomplete(Long owner) {
+        List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
+
+        return tasks.stream()
+                .filter(task -> task.getDatePlannedImplementation() != null && task.getDatePlannedImplementation().toLocalDate().isBefore(LocalDate.now()))
                 .sorted(Comparator.comparing(Task::getCreationDate))
                 .toList();
     }
@@ -47,7 +67,7 @@ public class TaskServiceImpl implements TaskService {
 
         return tasks.stream()
                 .filter(task -> task.getDatePlannedImplementation() == null)
-                .sorted(Comparator.comparing(Task::getCreationDate))
+                .sorted(Comparator.comparing(Task::getCreationDate).reversed())
                 .toList();
     }
 
@@ -63,11 +83,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task changeTask(Task task) {
-        return repository.save(task);
-    }
-
-    @Transactional
-    public Task updateTask(Task task) {
         return repository.save(task);
     }
 

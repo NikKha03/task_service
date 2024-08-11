@@ -38,6 +38,11 @@ public class TaskBuilder {
         return this;
     }
 
+    public TaskBuilder setCreationDate() {
+        task.setCreationDate(LocalDateTime.now());
+        return this;
+    }
+
     public TaskBuilder setTaskStatus(TaskStatus taskStatus) {
         task.setTaskStatus(taskStatus);
         return this;

@@ -16,7 +16,17 @@ public class InMemoryTaskService implements TaskService {
     private final InMemoryTaskDAO repository;
 
     @Override
-    public List<Task> getInProgressTasksWithDatePlannedImplementation(Long owner) {
+    public List<Task> getTasksIncomplete(Long owner) {
+        return List.of();
+    }
+
+    @Override
+    public List<Task> getTasksOnTheDay(Long owner) {
+        return List.of();
+    }
+
+    @Override
+    public List<Task> getTasksOnOtherDays(Long owner) {
         return List.of();
     }
 
