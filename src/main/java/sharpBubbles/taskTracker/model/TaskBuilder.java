@@ -13,11 +13,6 @@ public class TaskBuilder {
         this.task = task;
     }
 
-    public TaskBuilder setTaskId(Long taskId) {
-        task.setTaskId(taskId);
-        return this;
-    }
-
     public TaskBuilder setHeader(String header) {
         task.setHeader(header);
         return this;
@@ -33,8 +28,8 @@ public class TaskBuilder {
         return this;
     }
 
-    public TaskBuilder setDatePlannedImplementation(LocalDateTime dateTimeOfTask) {
-        task.setDatePlannedImplementation(dateTimeOfTask);
+    public TaskBuilder setPlannedImplDate(LocalDateTime dateTimeOfTask) {
+        task.setPlannedImplDate(dateTimeOfTask);
         return this;
     }
 

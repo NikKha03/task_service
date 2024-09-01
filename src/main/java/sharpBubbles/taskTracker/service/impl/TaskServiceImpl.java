@@ -36,7 +36,7 @@ public class TaskServiceImpl implements TaskService {
         List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
 
         return tasks.stream()
-                .filter(task -> task.getDatePlannedImplementation() != null && LocalDate.now().equals(task.getDatePlannedImplementation().toLocalDate()))
+                .filter(task -> task.getPlannedImplDate() != null && LocalDate.now().equals(task.getPlannedImplDate().toLocalDate()))
                 .sorted(Comparator.comparing(Task::getCreationDate).reversed())
                 .toList();
     }
@@ -46,7 +46,7 @@ public class TaskServiceImpl implements TaskService {
         List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
 
         return tasks.stream()
-                .filter(task -> task.getDatePlannedImplementation() != null && task.getDatePlannedImplementation().toLocalDate().isAfter(LocalDate.now()))
+                .filter(task -> task.getPlannedImplDate() != null && task.getPlannedImplDate().toLocalDate().isAfter(LocalDate.now()))
                 .sorted(Comparator.comparing(Task::getCreationDate))
                 .toList();
     }
@@ -56,7 +56,7 @@ public class TaskServiceImpl implements TaskService {
         List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
 
         return tasks.stream()
-                .filter(task -> task.getDatePlannedImplementation() != null && task.getDatePlannedImplementation().toLocalDate().isBefore(LocalDate.now()))
+                .filter(task -> task.getPlannedImplDate() != null && task.getPlannedImplDate().toLocalDate().isBefore(LocalDate.now()))
                 .sorted(Comparator.comparing(Task::getCreationDate))
                 .toList();
     }
@@ -66,7 +66,7 @@ public class TaskServiceImpl implements TaskService {
         List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
 
         return tasks.stream()
-                .filter(task -> task.getDatePlannedImplementation() == null)
+                .filter(task -> task.getPlannedImplDate() == null)
                 .sorted(Comparator.comparing(Task::getCreationDate).reversed())
                 .toList();
     }

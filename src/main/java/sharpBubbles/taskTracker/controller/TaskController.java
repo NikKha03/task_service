@@ -53,7 +53,6 @@ public class TaskController {
     @PostMapping("/createTask")
     public Task createTask(@PathVariable("ownerId") Long ownerId, @RequestBody TaskRequest request) {
         TaskBuilder taskBuilder = new TaskBuilder()
-                .setTaskId(request.getTaskId())
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
                 .setOwner(ownerId)
@@ -61,10 +60,10 @@ public class TaskController {
                 .setCreationDate();
 
 
-        if (request.getDatePlannedImplementation() != null) {
+        if (request.getPlannedImplDate() != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDatePlannedImplementation(), formatter);
-            taskBuilder.setDatePlannedImplementation(dateTimeOfTask);
+            LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getPlannedImplDate(), formatter);
+            taskBuilder.setPlannedImplDate(dateTimeOfTask);
         }
 
         return taskService.createTask(taskBuilder.build());
@@ -79,12 +78,12 @@ public class TaskController {
                 .setHeader(request.getHeader())
                 .setComment(request.getComment());
 
-        if (request.getDatePlannedImplementation() != null && request.getDatePlannedImplementation().length() >= 10) {
+        if (request.getPlannedImplDate() != null && request.getPlannedImplDate().length() >= 10) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDatePlannedImplementation(), formatter);
-            taskBuilder.setDatePlannedImplementation(dateTimeOfTask);
+            LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getPlannedImplDate(), formatter);
+            taskBuilder.setPlannedImplDate(dateTimeOfTask);
         } else {
-            taskBuilder.setDatePlannedImplementation(null);
+            taskBuilder.setPlannedImplDate(null);
         }
 
         return taskService.changeTask(taskBuilder.build());
