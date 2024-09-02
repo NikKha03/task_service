@@ -57,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
 
         return tasks.stream()
                 .filter(task -> task.getPlannedImplDate() != null && task.getPlannedImplDate().toLocalDate().isBefore(LocalDate.now()))
-                .sorted(Comparator.comparing(Task::getCreationDate))
+                .sorted(Comparator.comparing(Task::getPlannedImplDate).reversed())
                 .toList();
     }
 
