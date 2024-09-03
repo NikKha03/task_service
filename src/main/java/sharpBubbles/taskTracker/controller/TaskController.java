@@ -76,7 +76,8 @@ public class TaskController {
 
         TaskBuilder taskBuilder = new TaskBuilder(task)
                 .setHeader(request.getHeader())
-                .setComment(request.getComment());
+                .setComment(request.getComment())
+                .setCreationDate();
 
         if (request.getPlannedImplDate() != null && request.getPlannedImplDate().length() >= 10) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
