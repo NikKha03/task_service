@@ -6,17 +6,15 @@ import java.util.List;
 
 public interface TaskService {
 
-    List<Task> getAllTasks(Long owner);
+    List<Task> getCompletedTasks(Long owner, String category);
 
-    List<Task> getCompletedTasks(Long owner);
+    List<Task> getTasksOnTheDay(Long owner, String category);
 
-    List<Task> getTasksOnTheDay(Long owner);
+    List<Task> getTasksOnOtherDays(Long owner, String category);
 
-    List<Task> getTasksOnOtherDays(Long owner);
+    List<Task> getTasksIncomplete(Long owner, String category);
 
-    List<Task> getTasksIncomplete(Long owner);
-
-    List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner);
+    List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner, String category);
 
     Task createTask(Task task);
 

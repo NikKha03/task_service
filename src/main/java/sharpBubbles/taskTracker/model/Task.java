@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Task {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
 
     private String header;
@@ -23,6 +23,8 @@ public class Task {
 
     @NotNull
     private Long owner;
+
+    private String category;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime creationDate;

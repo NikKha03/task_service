@@ -20,20 +20,15 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository repository;
 
     @Override
-    public List<Task> getAllTasks(Long owner) {
-        return repository.getAllTasksByOwner(owner);
-    }
-
-    @Override
-    public List<Task> getCompletedTasks(Long owner) {
-        return repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.COMPLETED).stream()
+    public List<Task> getCompletedTasks(Long owner, String category) {
+        return repository.getAllByOwnerAndTaskStatusAndCategory(owner, TaskStatus.COMPLETED, category).stream()
                 .sorted(Comparator.comparing(Task::getExecutionDate).reversed())
                 .toList();
     }
 
     @Override
-    public List<Task> getTasksOnTheDay(Long owner) {
-        List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
+    public List<Task> getTasksOnTheDay(Long owner, String category) {
+        List<Task> tasks = repository.getAllByOwnerAndTaskStatusAndCategory(owner, TaskStatus.IN_PROGRESS, category);
 
         return tasks.stream()
                 .filter(task -> task.getPlannedImplDate() != null && LocalDate.now().equals(task.getPlannedImplDate().toLocalDate()))
@@ -42,18 +37,19 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getTasksOnOtherDays(Long owner) {
-        List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
+    public List<Task> getTasksOnOtherDays(Long owner, String category) {
+        List<Task> tasks = repository.getAllByOwnerAndTaskStatusAndCategory(owner, TaskStatus.IN_PROGRESS, category);
 
         return tasks.stream()
                 .filter(task -> task.getPlannedImplDate() != null && task.getPlannedImplDate().toLocalDate().isAfter(LocalDate.now()))
-                .sorted(Comparator.comparing(Task::getCreationDate))
+                .sorted(Comparator.comparing(Task::getPlannedImplDate).reversed()
+                        .thenComparing(Task::getCreationDate).reversed())
                 .toList();
     }
 
     @Override
-    public List<Task> getTasksIncomplete(Long owner) {
-        List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
+    public List<Task> getTasksIncomplete(Long owner, String category) {
+        List<Task> tasks = repository.getAllByOwnerAndTaskStatusAndCategory(owner, TaskStatus.IN_PROGRESS, category);
 
         return tasks.stream()
                 .filter(task -> task.getPlannedImplDate() != null && task.getPlannedImplDate().toLocalDate().isBefore(LocalDate.now()))
@@ -62,8 +58,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner) {
-        List<Task> tasks = repository.getAllByOwnerAndTaskStatus(owner, TaskStatus.IN_PROGRESS);
+    public List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner, String category) {
+        List<Task> tasks = repository.getAllByOwnerAndTaskStatusAndCategory(owner, TaskStatus.IN_PROGRESS, category);
 
         return tasks.stream()
                 .filter(task -> task.getPlannedImplDate() == null)

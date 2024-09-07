@@ -20,43 +20,39 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @GetMapping("/allTasks")
-    public List<Task> getAllTasks(@PathVariable("ownerId") Long ownerId) {
-        return taskService.getAllTasks(ownerId);
-    }
-
     @GetMapping("/allCompletedTasks")
-    public List<Task> getCompletedTask(@PathVariable("ownerId") Long ownerId) {
-        return taskService.getCompletedTasks(ownerId);
+    public List<Task> getCompletedTask(@PathVariable("ownerId") Long ownerId, @RequestParam String category) {
+        return taskService.getCompletedTasks(ownerId, category);
     }
 
     @GetMapping("/tasksOnTheDay")
-    public List<Task> getTasksOnTheDay(@PathVariable("ownerId") Long ownerId) {
-        return taskService.getTasksOnTheDay(ownerId);
+    public List<Task> getTasksOnTheDay(@PathVariable("ownerId") Long ownerId, @RequestParam String category) {
+        return taskService.getTasksOnTheDay(ownerId, category);
     }
 
     @GetMapping("/tasksOnOtherDays")
-    public List<Task> getTasksOnOtherDays(@PathVariable("ownerId") Long ownerId) {
-        return taskService.getTasksOnOtherDays(ownerId);
+    public List<Task> getTasksOnOtherDays(@PathVariable("ownerId") Long ownerId, @RequestParam String category) {
+        return taskService.getTasksOnOtherDays(ownerId, category);
     }
 
     @GetMapping("/tasksIncomplete")
-    public List<Task> getTasksIncomplete(@PathVariable("ownerId") Long ownerId) {
-        return taskService.getTasksIncomplete(ownerId);
+    public List<Task> getTasksIncomplete(@PathVariable("ownerId") Long ownerId, @RequestParam String category) {
+        return taskService.getTasksIncomplete(ownerId, category);
     }
 
     @GetMapping("/allInProgressTasksWithoutDatePlannedImplementation")
-    public List<Task> getInProgressTaskWithoutDatePlannedImplementation(@PathVariable("ownerId") Long ownerId) {
-        return taskService.getInProgressTasksWithoutDatePlannedImplementation(ownerId);
+    public List<Task> getInProgressTaskWithoutDatePlannedImplementation(@PathVariable("ownerId") Long ownerId, @RequestParam String category) {
+        return taskService.getInProgressTasksWithoutDatePlannedImplementation(ownerId, category);
     }
 
     @PostMapping("/createTask")
-    public Task createTask(@PathVariable("ownerId") Long ownerId, @RequestBody TaskRequest request) {
+    public Task createTask(@PathVariable("ownerId") Long ownerId, @RequestBody TaskRequest request, @RequestParam String category) {
         TaskBuilder taskBuilder = new TaskBuilder()
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
                 .setOwner(ownerId)
                 .setTaskStatus(TaskStatus.IN_PROGRESS)
+                .setCategory(category)
                 .setCreationDate();
 
 
@@ -67,6 +63,11 @@ public class TaskController {
         }
 
         return taskService.createTask(taskBuilder.build());
+    }
+
+    @PostMapping("/downloadTasks")
+    public void downloadTasks(@PathVariable("ownerId") Long ownerId, @RequestBody TaskRequest[] request) {
+
     }
 
     @Transactional

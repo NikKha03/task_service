@@ -16,27 +16,27 @@ public class InMemoryTaskService implements TaskService {
     private final InMemoryTaskDAO repository;
 
     @Override
-    public List<Task> getTasksIncomplete(Long owner) {
+    public List<Task> getTasksIncomplete(Long owner, String category) {
         return List.of();
     }
 
     @Override
-    public List<Task> getTasksOnTheDay(Long owner) {
+    public List<Task> getTasksOnTheDay(Long owner, String category) {
         return List.of();
     }
 
     @Override
-    public List<Task> getTasksOnOtherDays(Long owner) {
+    public List<Task> getTasksOnOtherDays(Long owner, String category) {
         return List.of();
     }
 
     @Override
-    public List<Task> getCompletedTasks(Long owner) {
+    public List<Task> getCompletedTasks(Long owner, String category) {
         return List.of();
     }
 
     @Override
-    public List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner) {
+    public List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner, String category) {
         return List.of();
     }
 
@@ -53,11 +53,6 @@ public class InMemoryTaskService implements TaskService {
     @Override
     public Task changeTask(Task task) {
         return repository.changeTask(task);
-    }
-
-    @Override
-    public List<Task> getAllTasks(Long owner) {
-        return repository.getAllTasks(owner);
     }
 
     public Task findTaskByTaskId(Long id) {

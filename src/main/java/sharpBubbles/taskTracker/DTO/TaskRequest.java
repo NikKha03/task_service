@@ -18,4 +18,6 @@ public class TaskRequest {
 
     private TaskStatus taskStatus;
 
+    private String category;
+
 }

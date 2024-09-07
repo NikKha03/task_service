@@ -28,6 +28,11 @@ public class TaskBuilder {
         return this;
     }
 
+    public TaskBuilder setCategory(String category) {
+        task.setCategory(category);
+        return this;
+    }
+
     public TaskBuilder setPlannedImplDate(LocalDateTime dateTimeOfTask) {
         task.setPlannedImplDate(dateTimeOfTask);
         return this;
