@@ -46,13 +46,13 @@ public class TaskController {
     }
 
     @PostMapping("/createTask")
-    public Task createTask(@PathVariable("ownerId") Long ownerId, @RequestBody TaskRequest request, @RequestParam String category) {
+    public Task createTask(@PathVariable("ownerId") Long ownerId, @RequestBody TaskRequest request) {
         TaskBuilder taskBuilder = new TaskBuilder()
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
                 .setOwner(ownerId)
                 .setTaskStatus(TaskStatus.IN_PROGRESS)
-                .setCategory(category)
+                .setCategory(request.getCategory())
                 .setCreationDate();
 
 
@@ -78,6 +78,7 @@ public class TaskController {
         TaskBuilder taskBuilder = new TaskBuilder(task)
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
+                .setCategory(request.getCategory())
                 .setCreationDate();
 
         if (request.getPlannedImplDate() != null && request.getPlannedImplDate().length() >= 10) {
