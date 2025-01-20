@@ -1,13 +1,13 @@
+server:
+  port: 8080
+frontend:
+  host: http://localhost:3000
 spring:
   jackson:
     date-format: "yyyy-MM-dd HH:mm"
     time-zone: "GMT+3"
   application:
     name: taskTracker
-  session:
-    redis:
-      host: localhost
-      port: 6379
   mvc:
     format:
       date: yyyy-MM-dd HH:mm
@@ -22,7 +22,3 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-server:
-  port: 8080
-frontend:
-  host: http://localhost:5173
