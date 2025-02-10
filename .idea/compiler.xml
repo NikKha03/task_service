@@ -7,18 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="taskTracker" />
         <module name="TaskService" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="taskTracker" target="21" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="TaskService" options="-parameters" />
-      <module name="taskTracker" options="-parameters" />
     </option>
   </component>
 </project>
