@@ -7,7 +7,7 @@ spring:
     date-format: "yyyy-MM-dd HH:mm"
     time-zone: "GMT+3"
   application:
-    name: taskTracker
+    name: TaskService
   mvc:
     format:
       date: yyyy-MM-dd HH:mm
@@ -18,7 +18,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5434/tasks
+    url: jdbc:postgresql://109.196.102.221:5432/task_service
     username: postgres
-    password: postgres
+    password: 4WuS-U-dBRtM
     driver-class-name: org.postgresql.Driver
