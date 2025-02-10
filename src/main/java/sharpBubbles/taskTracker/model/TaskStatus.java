@@ -1,5 +1,5 @@
 package sharpBubbles.taskTracker.model;
 
 public enum TaskStatus {
-    IN_PROGRESS, COMPLETED
+    AWAITING_COMPLETION, IN_PROGRESS, COMPLETED
 }

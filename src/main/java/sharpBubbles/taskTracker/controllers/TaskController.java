@@ -1,4 +1,4 @@
-package sharpBubbles.taskTracker.controller;
+package sharpBubbles.taskTracker.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
