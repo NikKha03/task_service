@@ -1,4 +1,8 @@
-package NikKha03.TaskService.model;
+package NikKha03.TaskService.service.builders;
+
+import NikKha03.TaskService.model.Category;
+import NikKha03.TaskService.model.Task;
+import NikKha03.TaskService.model.TaskStatus;
 
 import java.time.LocalDateTime;
 
@@ -23,12 +27,12 @@ public class TaskBuilder {
         return this;
     }
 
-    public TaskBuilder setOwner(Long owner) {
+    public TaskBuilder setOwner(String owner) {
         task.setOwner(owner);
         return this;
     }
 
-    public TaskBuilder setCategory(String category) {
+    public TaskBuilder setCategory(Category category) {
         task.setCategory(category);
         return this;
     }

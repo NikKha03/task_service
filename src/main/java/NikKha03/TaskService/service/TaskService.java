@@ -1,11 +1,11 @@
 package NikKha03.TaskService.service;
 
+import NikKha03.TaskService.DTO.TaskRequest;
 import NikKha03.TaskService.model.Task;
-
-import java.util.List;
 
 public interface TaskService {
 
+    /*
     List<Task> getCompletedTasks(Long owner, String category);
 
     List<Task> getTasksOnTheDay(Long owner, String category);
@@ -15,13 +15,20 @@ public interface TaskService {
     List<Task> getTasksIncomplete(Long owner, String category);
 
     List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner, String category);
+     */
 
-    Task createTask(Task task);
+    Task findTaskById(Long id);
+
+    Task createTask(String owner, TaskRequest request);
+
+    Task changeTask(Long taskId, TaskRequest request);
 
     void deleteTask(Long taskId);
 
-    Task changeTask(Task task);
+    Task setStatusOnCompleted(Long taskId);
 
-    Task findTaskByTaskId(Long id);
+    Task setStatusOnInProgress(Long taskId);
+
+    Task setStatusOnAwaitingCompletion(Long taskId);
 
 }

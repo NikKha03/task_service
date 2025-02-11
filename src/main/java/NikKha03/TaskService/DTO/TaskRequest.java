@@ -10,6 +10,8 @@ import NikKha03.TaskService.model.TaskStatus;
 @Getter
 public class TaskRequest {
 
+    private Long categoryId;
+
     private String header;
 
     private String comment;
@@ -17,7 +19,5 @@ public class TaskRequest {
     private String plannedImplDate;
 
     private TaskStatus taskStatus;
-
-    private String category;
 
 }

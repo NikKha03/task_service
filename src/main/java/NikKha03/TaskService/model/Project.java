@@ -1,6 +1,7 @@
 package NikKha03.TaskService.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -14,15 +15,22 @@ public class Project {
     @GeneratedValue()
     private Long projectId;
 
+    @NotNull
     private String name;
 
     // id пользователя, полученное из keycloak
+    @NotNull
     private String projectOwner;
 
-    @OneToMany(mappedBy = "projectId")
-    private List<ProjectMember> team;
+    @OneToMany(mappedBy = "project")
+    private List<Category> categories;
 
-    @OneToMany()
-    private List<Task> tasks;
+    // команда, работающая над проектом
+    @OneToMany(mappedBy = "project")
+    private List<User> team;
+
+    // группа людей, которые имеют возможность отслеживать выполнение работ, но не могут вносить изменения
+    @OneToMany(mappedBy = "project")
+    private List<User> observers;
 
 }
