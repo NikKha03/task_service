@@ -1,24 +1,28 @@
 package NikKha03.TaskService.controllers;
 
-import lombok.AllArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
 import NikKha03.TaskService.DTO.TaskRequest;
 import NikKha03.TaskService.model.Task;
 import NikKha03.TaskService.model.TaskBuilder;
 import NikKha03.TaskService.model.TaskStatus;
 import NikKha03.TaskService.service.TaskService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Tag(name="task_controller")
 @RestController
-@AllArgsConstructor
-@RequestMapping("/taskServiceApi/{ownerId}")
+@RequestMapping("/api/{ownerId}")
 public class TaskController {
 
     private final TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @GetMapping("/allCompletedTasks")
     public List<Task> getCompletedTask(@PathVariable("ownerId") Long ownerId, @RequestParam String category) {

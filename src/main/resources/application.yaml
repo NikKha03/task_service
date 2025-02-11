@@ -1,7 +1,5 @@
 server:
   port: 8080
-frontend:
-  host: http://localhost:3000
 spring:
   jackson:
     date-format: "yyyy-MM-dd HH:mm"
@@ -22,3 +20,10 @@ spring:
     username: postgres
     password: 4WuS-U-dBRtM
     driver-class-name: org.postgresql.Driver
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui/index.html
+
