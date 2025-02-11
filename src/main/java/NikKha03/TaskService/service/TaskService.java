@@ -3,6 +3,8 @@ package NikKha03.TaskService.service;
 import NikKha03.TaskService.DTO.TaskRequest;
 import NikKha03.TaskService.model.Task;
 
+import java.util.List;
+
 public interface TaskService {
 
     /*
@@ -16,6 +18,8 @@ public interface TaskService {
 
     List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner, String category);
      */
+
+    List<Task> getByCategory(Long categoryId);
 
     Task findTaskById(Long id);
 

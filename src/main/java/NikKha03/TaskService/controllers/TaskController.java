@@ -26,6 +26,11 @@ public class TaskController {
     Поэтому, один из параметров может быть null!
     */
 
+    @GetMapping("/byCategory/{categoryId}")
+    public List<Task> getByCategory(@PathVariable("categoryId") Long categoryId) {
+        return taskService.getByCategory(categoryId);
+    }
+
     // задачи, которые нужно сделать
     @GetMapping("/awaitingCompletionTasks")
     public List<Task> getAwaitingCompletionTasks(@RequestParam String userId, @RequestParam Long categoryId) {

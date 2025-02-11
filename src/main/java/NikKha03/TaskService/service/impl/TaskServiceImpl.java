@@ -1,6 +1,7 @@
 package NikKha03.TaskService.service.impl;
 
 import NikKha03.TaskService.DTO.TaskRequest;
+import NikKha03.TaskService.mappers.TaskMapper;
 import NikKha03.TaskService.model.Category;
 import NikKha03.TaskService.model.Task;
 import NikKha03.TaskService.model.TaskStatus;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @Service
@@ -20,6 +22,8 @@ import java.time.format.DateTimeFormatter;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository repository;
+    private final TaskMapper mapper;
+
     private final CategoryRepository categoryRepository;
 
     /*
@@ -71,6 +75,11 @@ public class TaskServiceImpl implements TaskService {
                 .toList();
     }
      */
+
+    @Override
+    public List<Task> getByCategory(Long categoryId) {
+        return mapper.getTasksByCategory(categoryId);
+    }
 
     @Override
     public Task createTask(String owner, TaskRequest request) {

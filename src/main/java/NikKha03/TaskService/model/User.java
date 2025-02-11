@@ -10,7 +10,7 @@ import lombok.Data;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // id пользователя, полученное из keycloak
