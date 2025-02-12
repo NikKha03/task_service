@@ -8,22 +8,25 @@ import java.util.List;
 public interface TaskService {
 
     /*
-    List<Task> getCompletedTasks(Long owner, String category);
-
     List<Task> getTasksOnTheDay(Long owner, String category);
-
     List<Task> getTasksOnOtherDays(Long owner, String category);
-
-    List<Task> getTasksIncomplete(Long owner, String category);
-
-    List<Task> getInProgressTasksWithoutDatePlannedImplementation(Long owner, String category);
      */
-
-    List<Task> getByCategory(Long categoryId);
 
     Task findTaskById(Long id);
 
-    Task createTask(String owner, TaskRequest request);
+    List<Task> getByCategory(Long categoryId);
+
+    List<Task> getAwaitingCompletionTasks(String implementer, Long categoryId);
+
+    List<Task> getInProgressTasks(String implementer, Long categoryId);
+
+    List<Task> getCompletedTask(String implementer, Long categoryId);
+
+    List<Task> getTasksIncomplete(String implementer);
+
+    List<Task> getTaskWithoutDateImpl(String implementer);
+
+    Task createTask(String creator, TaskRequest request);
 
     Task changeTask(Long taskId, TaskRequest request);
 

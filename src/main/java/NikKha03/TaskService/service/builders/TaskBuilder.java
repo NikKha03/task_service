@@ -27,8 +27,8 @@ public class TaskBuilder {
         return this;
     }
 
-    public TaskBuilder setOwner(String owner) {
-        task.setOwner(owner);
+    public TaskBuilder setCreator(String creator) {
+        task.setCreator(creator);
         return this;
     }
 

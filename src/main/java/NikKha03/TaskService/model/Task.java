@@ -25,7 +25,7 @@ public class Task {
 
     // кто создал задачу (username пользователя, полученный из keycloak)
     @NotNull
-    private String owner;
+    private String creator;
 
     // кто выполнил задачу (username пользователя, полученный из keycloak)
     private String implementer;

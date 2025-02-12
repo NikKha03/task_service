@@ -33,37 +33,37 @@ public class TaskController {
 
     // задачи, которые нужно сделать
     @GetMapping("/awaitingCompletionTasks")
-    public List<Task> getAwaitingCompletionTasks(@RequestParam String userId, @RequestParam Long categoryId) {
+    public List<Task> getAwaitingCompletionTasks(@RequestParam String implementer, @RequestParam Long categoryId) {
         return null;
     }
 
     // задачи, которые в работе
     @GetMapping("/inProgressTasks")
-    public List<Task> getInProgressTasks(@RequestParam String userId, @RequestParam Long categoryId) {
+    public List<Task> getInProgressTasks(@RequestParam String implementer, @RequestParam Long categoryId) {
         return null;
     }
 
     // задачи, которые выполнены
     @GetMapping("/completedTasks")
-    public List<Task> getCompletedTask(@RequestParam String userId, @RequestParam Long categoryId) {
+    public List<Task> getCompletedTask(@RequestParam String implementer, @RequestParam Long categoryId) {
         return null;
     }
 
     // задачи, которые не были выполнены
     @GetMapping("/incompleteTasks")
-    public List<Task> getTasksIncomplete(@RequestParam String userId) {
+    public List<Task> getTasksIncomplete(@RequestParam String implementer) {
         return null;
     }
 
     // задачи без даты выполнения
     @GetMapping("/withoutDateImplTasks")
-    public List<Task> getTaskWithoutDateImpl(@RequestParam String userId) {
+    public List<Task> getTaskWithoutDateImpl(@RequestParam String implementer) {
         return null;
     }
 
-    @PostMapping("/createTask/{owner}")
-    public Task createTask(@PathVariable("owner") String owner, @RequestBody TaskRequest request) {
-        return taskService.createTask(owner, request);
+    @PostMapping("/createTask/{creator}")
+    public Task createTask(@PathVariable("creator") String creator, @RequestBody TaskRequest request) {
+        return taskService.createTask(creator, request);
     }
 
     @Transactional
