@@ -31,49 +31,54 @@ public class TaskController {
         return taskService.getByCategory(categoryId);
     }
 
+    // TODO
     // задачи, которые нужно сделать
     @GetMapping("/awaitingCompletionTasks")
     public List<Task> getAwaitingCompletionTasks(@RequestParam String implementer, @RequestParam Long categoryId) {
         return null;
     }
 
+    // TODO
     // задачи, которые в работе
     @GetMapping("/inProgressTasks")
     public List<Task> getInProgressTasks(@RequestParam String implementer, @RequestParam Long categoryId) {
         return null;
     }
 
+    // TODO
     // задачи, которые выполнены
     @GetMapping("/completedTasks")
     public List<Task> getCompletedTask(@RequestParam String implementer, @RequestParam Long categoryId) {
         return null;
     }
 
+    // TODO
     // задачи, которые не были выполнены
     @GetMapping("/incompleteTasks")
     public List<Task> getTasksIncomplete(@RequestParam String implementer) {
         return null;
     }
 
+    // TODO
     // задачи без даты выполнения
     @GetMapping("/withoutDateImplTasks")
     public List<Task> getTaskWithoutDateImpl(@RequestParam String implementer) {
         return null;
     }
 
-    @PostMapping("/createTask/{creator}")
+    @PostMapping("/create/{creator}")
     public Task createTask(@PathVariable("creator") String creator, @RequestBody TaskRequest request) {
         return taskService.createTask(creator, request);
     }
 
     @Transactional
-    @PutMapping("/changeTask/{taskId}")
+    @PutMapping("/change/{taskId}")
     public Task changeTask(@PathVariable("taskId") Long taskId, @RequestBody TaskRequest request) {
         return taskService.changeTask(taskId, request);
     }
 
     @Transactional
-    @DeleteMapping("/deleteTask/{taskId}")
+    @DeleteMapping("/delete/{taskId}")
     public void deleteTask(@PathVariable("taskId") Long taskId) {
         taskService.deleteTask(taskId);
     }

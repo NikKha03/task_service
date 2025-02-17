@@ -26,29 +26,6 @@ public class TaskServiceImpl implements TaskService {
 
     private final CategoryRepository categoryRepository;
 
-    /*
-    @Override
-    public List<Task> getTasksOnTheDay(Long owner, String category) {
-        List<Task> tasks = repository.getAllByOwnerAndTaskStatusAndCategory(owner, TaskStatus.IN_PROGRESS, category);
-
-        return tasks.stream()
-                .filter(task -> task.getPlannedImplDate() != null && LocalDate.now().equals(task.getPlannedImplDate().toLocalDate()))
-                .sorted(Comparator.comparing(Task::getCreationDate).reversed())
-                .toList();
-    }
-
-    @Override
-    public List<Task> getTasksOnOtherDays(Long owner, String category) {
-        List<Task> tasks = repository.getAllByOwnerAndTaskStatusAndCategory(owner, TaskStatus.IN_PROGRESS, category);
-
-        return tasks.stream()
-                .filter(task -> task.getPlannedImplDate() != null && task.getPlannedImplDate().toLocalDate().isAfter(LocalDate.now()))
-                .sorted(Comparator.comparing(Task::getPlannedImplDate).reversed()
-                        .thenComparing(Task::getCreationDate).reversed())
-                .toList();
-    }
-     */
-
     @Override
     public Task findTaskById(Long id) {
         return repository.findById(id).orElse(null);
@@ -86,6 +63,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task createTask(String creator, TaskRequest request) {
+        if (!categoryRepository.existsById(request.getCategoryId())) {
+            //TODO
+            return null;
+        }
         Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
 
         TaskBuilder taskBuilder = new TaskBuilder()
@@ -107,11 +88,15 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteTask(Long taskId) {
-        repository.deleteTaskByTaskId(taskId);
+        repository.deleteById(taskId);
     }
 
     @Override
     public Task changeTask(Long taskId, TaskRequest request) {
+        if (!repository.existsById(taskId) && !categoryRepository.existsById(request.getCategoryId())) {
+            // TODO
+            return null;
+        }
         Task task = repository.findById(taskId).orElse(null);
         Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
 
@@ -164,4 +149,28 @@ public class TaskServiceImpl implements TaskService {
 
         return repository.save(task);
     }
+
+    /*
+    @Override
+    public List<Task> getTasksOnTheDay(Long owner, String category) {
+        List<Task> tasks = repository.getAllByOwnerAndTaskStatusAndCategory(owner, TaskStatus.IN_PROGRESS, category);
+
+        return tasks.stream()
+                .filter(task -> task.getPlannedImplDate() != null && LocalDate.now().equals(task.getPlannedImplDate().toLocalDate()))
+                .sorted(Comparator.comparing(Task::getCreationDate).reversed())
+                .toList();
+    }
+
+    @Override
+    public List<Task> getTasksOnOtherDays(Long owner, String category) {
+        List<Task> tasks = repository.getAllByOwnerAndTaskStatusAndCategory(owner, TaskStatus.IN_PROGRESS, category);
+
+        return tasks.stream()
+                .filter(task -> task.getPlannedImplDate() != null && task.getPlannedImplDate().toLocalDate().isAfter(LocalDate.now()))
+                .sorted(Comparator.comparing(Task::getPlannedImplDate).reversed()
+                        .thenComparing(Task::getCreationDate).reversed())
+                .toList();
+    }
+     */
+
 }
