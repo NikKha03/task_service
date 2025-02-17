@@ -27,4 +27,19 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.changeProject(projectId, request));
     }
 
+    @GetMapping("/my")
+    public ResponseEntity<?> getMyProjects(@RequestParam String username) {
+        return ResponseEntity.ok(projectService.getMyProjects(username));
+    }
+
+    @GetMapping("/participant")
+    public ResponseEntity<?> getParticipantProjects(@RequestParam String username) {
+        return ResponseEntity.ok(projectService.getParticipantProjects(username));
+    }
+
+    @GetMapping("/observer")
+    public ResponseEntity<?> getObserverProjects(@RequestParam String username) {
+        return ResponseEntity.ok(projectService.getObserverProjects(username));
+    }
+
 }

@@ -1,9 +1,12 @@
 package NikKha03.TaskService.service.impl;
 
 import NikKha03.TaskService.DTO.ProjectRequest;
+import NikKha03.TaskService.mappers.ProjectMapper;
 import NikKha03.TaskService.model.Project;
+import NikKha03.TaskService.model.TeamRole;
 import NikKha03.TaskService.model.User;
 import NikKha03.TaskService.repository.ProjectRepository;
+import NikKha03.TaskService.repository.UserRepository;
 import NikKha03.TaskService.service.ProjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,14 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository repository;
+    private final ProjectMapper mapper;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    private final UserRepository userRepository;
+
+    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, UserRepository userRepository) {
         this.repository = projectRepository;
+        this.mapper = projectMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -28,16 +36,19 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project();
         project.setName(request.getName());
         project.setProjectOwner(request.getProjectOwner());
+        repository.save(project);
 
         User projectUser = new User();
         projectUser.setProject(project);
         projectUser.setUsername(request.getProjectOwner());
+        projectUser.setRole(TeamRole.Participant.toString());
+        userRepository.save(projectUser);
 
         List<User> team = new ArrayList<>();
         team.add(projectUser);
         project.setTeam(team);
 
-        return ResponseEntity.ok(repository.save(project));
+        return ResponseEntity.ok(project);
     }
 
     // TODO
@@ -50,6 +61,21 @@ public class ProjectServiceImpl implements ProjectService {
         project.setName(request.getName());
 
         return ResponseEntity.ok(repository.save(project));
+    }
+
+    @Override
+    public ResponseEntity<?> getMyProjects(String username) {
+        return ResponseEntity.ok(mapper.getMyProjects(username));
+    }
+
+    @Override
+    public ResponseEntity<?> getParticipantProjects(String username) {
+        return ResponseEntity.ok(mapper.getProjectsWithRole(username, TeamRole.Participant.toString()));
+    }
+
+    @Override
+    public ResponseEntity<?> getObserverProjects(String username) {
+        return ResponseEntity.ok(mapper.getProjectsWithRole(username, TeamRole.Observer.toString()));
     }
 
 }

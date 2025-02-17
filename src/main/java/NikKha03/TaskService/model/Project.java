@@ -29,8 +29,4 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<User> team;
 
-    // группа людей, которые имеют возможность отслеживать выполнение работ, но не могут вносить изменения
-    @OneToMany(mappedBy = "project")
-    private List<User> observers;
-
 }

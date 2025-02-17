@@ -16,6 +16,8 @@ public class User {
     // id пользователя, полученное из keycloak
     private String username;
 
+    private String role;
+
     @ManyToOne()
     @JoinColumn(name = "project", nullable = false)
     @JsonIgnore()

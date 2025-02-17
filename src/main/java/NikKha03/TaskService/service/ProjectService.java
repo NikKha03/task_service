@@ -9,4 +9,10 @@ public interface ProjectService {
 
     ResponseEntity<?> changeProject(Long projectId, ProjectRequest request);
 
+    ResponseEntity<?> getMyProjects(String username);
+
+    ResponseEntity<?> getParticipantProjects(String username);
+
+    ResponseEntity<?> getObserverProjects(String username);
+
 }
