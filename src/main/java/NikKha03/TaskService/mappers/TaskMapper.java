@@ -14,4 +14,7 @@ public interface TaskMapper {
     @Select("SELECT * FROM tasks WHERE category=#{categoryId}")
     List<Task> getTasksByCategory(@Param("categoryId") Long categoryId);
 
+    @Select("SELECT * FROM tasks WHERE implementer=#{implementer} AND status=#{status}")
+    List<Task> getTasksByImplementerAndStatus(@Param("implementer") String implementer, @Param("status") String status);
+
 }

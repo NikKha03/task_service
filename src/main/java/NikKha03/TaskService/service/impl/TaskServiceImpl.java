@@ -12,8 +12,10 @@ import NikKha03.TaskService.service.builders.TaskBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -37,23 +39,26 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getAwaitingCompletionTasks(String implementer, Long categoryId) {
-        return List.of();
+    public List<Task> getTasksByStatus(String implementer, String status) {
+        return mapper.getTasksByImplementerAndStatus(implementer, status);
     }
 
     @Override
-    public List<Task> getInProgressTasks(String implementer, Long categoryId) {
-        return List.of();
-    }
-
-    @Override
-    public List<Task> getCompletedTask(String implementer, Long categoryId) {
-        return List.of();
+    public List<Task> getInProgressTasks(String implementer) {
+        List<Task> tasks = mapper.getTasksByImplementerAndStatus(implementer, TaskStatus.IN_PROGRESS.toString());
+        return tasks.stream()
+                .filter(task -> task.getPlannedImplDate() != null && task.getPlannedImplDate().toLocalDate().isAfter(LocalDate.now()))
+                .sorted(Comparator.comparing(Task::getPlannedImplDate).reversed())
+                .toList();
     }
 
     @Override
     public List<Task> getTasksIncomplete(String implementer) {
-        return List.of();
+        List<Task> tasks = mapper.getTasksByImplementerAndStatus(implementer, TaskStatus.IN_PROGRESS.toString());
+        return tasks.stream()
+                .filter(task -> task.getPlannedImplDate() != null && task.getPlannedImplDate().toLocalDate().isBefore(LocalDate.now()))
+                .sorted(Comparator.comparing(Task::getPlannedImplDate).reversed())
+                .toList();
     }
 
     @Override
@@ -73,14 +78,16 @@ public class TaskServiceImpl implements TaskService {
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
                 .setCreator(creator)
-                .setTaskStatus(TaskStatus.IN_PROGRESS)
                 .setCategory(category)
                 .setCreationDate();
 
         if (request.getPlannedImplDate() != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getPlannedImplDate(), formatter);
-            taskBuilder.setPlannedImplDate(dateTimeOfTask);
+            taskBuilder.setPlannedImplDate(dateTimeOfTask)
+                    .setTaskStatus(TaskStatus.AWAITING_COMPLETION);
+        } else {
+            taskBuilder.setTaskStatus(TaskStatus.WITHOUT_DATE_IMPL);
         }
 
         return repository.save(taskBuilder.build());
@@ -109,43 +116,30 @@ public class TaskServiceImpl implements TaskService {
         if (request.getPlannedImplDate() != null && request.getPlannedImplDate().length() >= 10) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getPlannedImplDate(), formatter);
-            taskBuilder.setPlannedImplDate(dateTimeOfTask);
+            if (task.getTaskStatus().equals(TaskStatus.WITHOUT_DATE_IMPL)) {
+                taskBuilder.setPlannedImplDate(dateTimeOfTask)
+                        .setTaskStatus(TaskStatus.AWAITING_COMPLETION);
+            }
         } else {
-            taskBuilder.setPlannedImplDate(null);
+            taskBuilder.setPlannedImplDate(null)
+                    .setTaskStatus(TaskStatus.WITHOUT_DATE_IMPL);
         }
 
         return repository.save(taskBuilder.build());
     }
 
     @Override
-    public Task setStatusOnCompleted(Long taskId) {
+    public Task setStatus(Long taskId, TaskStatus status, boolean resetExecutionDate) {
         Task task = repository.findById(taskId).orElse(null);
         if (task == null) return null;
 
-        task.setExecutionDate(LocalDateTime.now());
-        task.setTaskStatus(TaskStatus.COMPLETED);
+        if (resetExecutionDate) {
+            task.setExecutionDate(null);
+        } else {
+            task.setExecutionDate(LocalDateTime.now());
+        }
 
-        return repository.save(task);
-    }
-
-    @Override
-    public Task setStatusOnInProgress(Long taskId) {
-        Task task = repository.findById(taskId).orElse(null);
-        if (task == null) return null;
-
-        task.setExecutionDate(null);
-        task.setTaskStatus(TaskStatus.IN_PROGRESS);
-
-        return repository.save(task);
-    }
-
-    @Override
-    public Task setStatusOnAwaitingCompletion(Long taskId) {
-        Task task = repository.findById(taskId).orElse(null);
-        if (task == null) return null;
-
-        task.setExecutionDate(null);
-        task.setTaskStatus(TaskStatus.AWAITING_COMPLETION);
+        task.setTaskStatus(status);
 
         return repository.save(task);
     }

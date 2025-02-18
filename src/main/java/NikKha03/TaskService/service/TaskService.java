@@ -2,6 +2,7 @@ package NikKha03.TaskService.service;
 
 import NikKha03.TaskService.DTO.TaskRequest;
 import NikKha03.TaskService.model.Task;
+import NikKha03.TaskService.model.TaskStatus;
 
 import java.util.List;
 
@@ -16,11 +17,9 @@ public interface TaskService {
 
     List<Task> getByCategory(Long categoryId);
 
-    List<Task> getAwaitingCompletionTasks(String implementer, Long categoryId);
+    List<Task> getTasksByStatus(String implementer, String status);
 
-    List<Task> getInProgressTasks(String implementer, Long categoryId);
-
-    List<Task> getCompletedTask(String implementer, Long categoryId);
+    List<Task> getInProgressTasks(String implementer);
 
     List<Task> getTasksIncomplete(String implementer);
 
@@ -32,10 +31,6 @@ public interface TaskService {
 
     void deleteTask(Long taskId);
 
-    Task setStatusOnCompleted(Long taskId);
-
-    Task setStatusOnInProgress(Long taskId);
-
-    Task setStatusOnAwaitingCompletion(Long taskId);
+    Task setStatus(Long taskId, TaskStatus status, boolean resetExecutionDate);
 
 }

@@ -64,6 +64,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public void deleteProject(Long projectId) {
+        repository.deleteById(projectId);
+    }
+
+    @Override
     public ResponseEntity<?> getMyProjects(String username) {
         return ResponseEntity.ok(mapper.getMyProjects(username));
     }

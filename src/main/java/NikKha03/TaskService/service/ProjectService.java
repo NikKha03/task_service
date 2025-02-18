@@ -9,6 +9,8 @@ public interface ProjectService {
 
     ResponseEntity<?> changeProject(Long projectId, ProjectRequest request);
 
+    void deleteProject(Long projectId);
+
     ResponseEntity<?> getMyProjects(String username);
 
     ResponseEntity<?> getParticipantProjects(String username);

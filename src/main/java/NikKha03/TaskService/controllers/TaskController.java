@@ -2,6 +2,7 @@ package NikKha03.TaskService.controllers;
 
 import NikKha03.TaskService.DTO.TaskRequest;
 import NikKha03.TaskService.model.Task;
+import NikKha03.TaskService.model.TaskStatus;
 import NikKha03.TaskService.service.TaskService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,39 +32,34 @@ public class TaskController {
         return taskService.getByCategory(categoryId);
     }
 
-    // TODO
     // задачи, которые нужно сделать
     @GetMapping("/awaitingCompletionTasks")
-    public List<Task> getAwaitingCompletionTasks(@RequestParam String implementer, @RequestParam Long categoryId) {
-        return null;
+    public List<Task> getAwaitingCompletionTasks(@RequestParam String implementer) {
+        return taskService.getTasksByStatus(implementer, TaskStatus.AWAITING_COMPLETION.toString());
     }
 
-    // TODO
     // задачи, которые в работе
     @GetMapping("/inProgressTasks")
-    public List<Task> getInProgressTasks(@RequestParam String implementer, @RequestParam Long categoryId) {
-        return null;
+    public List<Task> getInProgressTasks(@RequestParam String implementer) {
+        return taskService.getInProgressTasks(implementer);
     }
 
-    // TODO
     // задачи, которые выполнены
     @GetMapping("/completedTasks")
-    public List<Task> getCompletedTask(@RequestParam String implementer, @RequestParam Long categoryId) {
-        return null;
+    public List<Task> getCompletedTask(@RequestParam String implementer) {
+        return  taskService.getTasksByStatus(implementer, TaskStatus.COMPLETED.toString());
     }
 
-    // TODO
     // задачи, которые не были выполнены
     @GetMapping("/incompleteTasks")
     public List<Task> getTasksIncomplete(@RequestParam String implementer) {
-        return null;
+        return taskService.getTasksIncomplete(implementer);
     }
 
-    // TODO
     // задачи без даты выполнения
     @GetMapping("/withoutDateImplTasks")
     public List<Task> getTaskWithoutDateImpl(@RequestParam String implementer) {
-        return null;
+        return taskService.getTasksByStatus(implementer, TaskStatus.WITHOUT_DATE_IMPL.toString());
     }
 
     @PostMapping("/create/{creator}")
@@ -85,17 +81,17 @@ public class TaskController {
 
     @PutMapping("/setStatusOnCompleted/{taskId}")
     public Task setStatusOnCompleted(@PathVariable("taskId") Long taskId) {
-        return taskService.setStatusOnCompleted(taskId);
+        return taskService.setStatus(taskId, TaskStatus.COMPLETED, false);
     }
 
     @PutMapping("/setStatusOnInProgress/{taskId}")
     public Task setStatusOnInProgress(@PathVariable("taskId") Long taskId) {
-        return taskService.setStatusOnInProgress(taskId);
+        return taskService.setStatus(taskId, TaskStatus.IN_PROGRESS, true);
     }
 
     @PutMapping("/setStatusOnAwaitingCompletion/{taskId}")
     public Task setStatusOnAwaitingCompletion(@PathVariable("taskId") Long taskId) {
-        return taskService.setStatusOnAwaitingCompletion(taskId);
+        return taskService.setStatus(taskId, TaskStatus.AWAITING_COMPLETION, true);
     }
 
 }

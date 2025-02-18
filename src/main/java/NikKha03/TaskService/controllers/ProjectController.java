@@ -3,6 +3,7 @@ package NikKha03.TaskService.controllers;
 import NikKha03.TaskService.DTO.ProjectRequest;
 import NikKha03.TaskService.service.ProjectService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,12 @@ public class ProjectController {
     @PutMapping("/change/{projectId}")
     public ResponseEntity<?> changeProject(@PathVariable Long projectId, @RequestBody ProjectRequest request) {
         return ResponseEntity.ok(projectService.changeProject(projectId, request));
+    }
+
+    @Transactional
+    @DeleteMapping("/delete/{projectId}")
+    public void deleteProject(@PathVariable Long projectId) {
+        projectService.deleteProject(projectId);
     }
 
     @GetMapping("/my")
