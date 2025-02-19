@@ -5,6 +5,7 @@ import NikKha03.TaskService.model.Task;
 import NikKha03.TaskService.model.TaskStatus;
 import NikKha03.TaskService.service.TaskService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,13 +64,13 @@ public class TaskController {
     }
 
     @PostMapping("/create/{creator}")
-    public Task createTask(@PathVariable("creator") String creator, @RequestBody TaskRequest request) {
+    public ResponseEntity<?> createTask(@PathVariable("creator") String creator, @RequestBody TaskRequest request) {
         return taskService.createTask(creator, request);
     }
 
     @Transactional
     @PutMapping("/change/{taskId}")
-    public Task changeTask(@PathVariable("taskId") Long taskId, @RequestBody TaskRequest request) {
+    public ResponseEntity<?> changeTask(@PathVariable("taskId") Long taskId, @RequestBody TaskRequest request) {
         return taskService.changeTask(taskId, request);
     }
 

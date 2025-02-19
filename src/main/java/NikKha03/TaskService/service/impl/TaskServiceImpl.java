@@ -10,6 +10,7 @@ import NikKha03.TaskService.repository.TaskRepository;
 import NikKha03.TaskService.service.TaskService;
 import NikKha03.TaskService.service.builders.TaskBuilder;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -67,10 +68,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task createTask(String creator, TaskRequest request) {
+    public ResponseEntity<?> createTask(String creator, TaskRequest request) {
         if (!categoryRepository.existsById(request.getCategoryId())) {
-            //TODO
-            return null;
+            return ResponseEntity.badRequest().body("Category doesn't exist");
         }
         Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
 
@@ -90,7 +90,7 @@ public class TaskServiceImpl implements TaskService {
             taskBuilder.setTaskStatus(TaskStatus.WITHOUT_DATE_IMPL);
         }
 
-        return repository.save(taskBuilder.build());
+        return ResponseEntity.ok(repository.save(taskBuilder.build()));
     }
 
     @Override
@@ -99,10 +99,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task changeTask(Long taskId, TaskRequest request) {
-        if (!repository.existsById(taskId) && !categoryRepository.existsById(request.getCategoryId())) {
-            // TODO
-            return null;
+    public ResponseEntity<?> changeTask(Long taskId, TaskRequest request) {
+        if (!repository.existsById(taskId) || !categoryRepository.existsById(request.getCategoryId())) {
+            return ResponseEntity.badRequest().body("Invalid taskId or categoryId");
         }
         Task task = repository.findById(taskId).orElse(null);
         Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
@@ -125,7 +124,7 @@ public class TaskServiceImpl implements TaskService {
                     .setTaskStatus(TaskStatus.WITHOUT_DATE_IMPL);
         }
 
-        return repository.save(taskBuilder.build());
+        return ResponseEntity.ok(repository.save(taskBuilder.build()));
     }
 
     @Override

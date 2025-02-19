@@ -3,6 +3,7 @@ package NikKha03.TaskService.service;
 import NikKha03.TaskService.DTO.TaskRequest;
 import NikKha03.TaskService.model.Task;
 import NikKha03.TaskService.model.TaskStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -25,9 +26,9 @@ public interface TaskService {
 
     List<Task> getTaskWithoutDateImpl(String implementer);
 
-    Task createTask(String creator, TaskRequest request);
+    ResponseEntity<?> createTask(String creator, TaskRequest request);
 
-    Task changeTask(Long taskId, TaskRequest request);
+    ResponseEntity<?> changeTask(Long taskId, TaskRequest request);
 
     void deleteTask(Long taskId);
 

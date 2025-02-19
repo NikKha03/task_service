@@ -20,4 +20,11 @@ public class TaskRequest {
 
     private TaskStatus taskStatus;
 
+    public TaskRequest() {
+    }
+
+    public TaskRequest(Long categoryId, String header) {
+        this.categoryId = categoryId;
+        this.header = header;
+    }
 }
