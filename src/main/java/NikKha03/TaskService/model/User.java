@@ -2,11 +2,13 @@ package NikKha03.TaskService.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "users_projects")
 public class User {
 
     @Id
@@ -14,9 +16,12 @@ public class User {
     private Long id;
 
     // id пользователя, полученное из keycloak
+    @NotNull
     private String username;
 
-    private String role;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private TeamRole role;
 
     @ManyToOne()
     @JoinColumn(name = "project", nullable = false)

@@ -20,6 +20,7 @@ public class Project {
 
     // id пользователя, полученное из keycloak
     @NotNull
+    @Column(name = "project_owner")
     private String projectOwner;
 
     @OneToMany(mappedBy = "project")

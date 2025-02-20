@@ -37,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ResponseEntity<?> changeCategory(Long categoryId, CategoryRequest request) {
-        if (!repository.existsById(categoryId) || !projectRepository.existsById(request.getProjectId())) {
+        if (!repository.existsById(categoryId)) {
             return ResponseEntity.badRequest().body("Invalid categoryId or projectId");
         }
 

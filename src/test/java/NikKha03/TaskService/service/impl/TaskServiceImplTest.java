@@ -37,12 +37,4 @@ class TaskServiceImplTest {
         assertEquals(expected, serviceImpl.createTask(creator, taskRequest));
     }
 
-    @Test
-    void createTaskTest() {
-    }
-
-    @Test
-    void changeTaskTest() {
-    }
-
 }

@@ -41,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
         User projectUser = new User();
         projectUser.setProject(project);
         projectUser.setUsername(request.getProjectOwner());
-        projectUser.setRole(TeamRole.Participant.toString());
+        projectUser.setRole(TeamRole.Participant);
         userRepository.save(projectUser);
 
         List<User> team = new ArrayList<>();
@@ -70,17 +70,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResponseEntity<?> getMyProjects(String username) {
-        return ResponseEntity.ok(mapper.getMyProjects(username));
+        return ResponseEntity.ok(repository.getMyProjects(username));
     }
 
     @Override
-    public ResponseEntity<?> getParticipantProjects(String username) {
-        return ResponseEntity.ok(mapper.getProjectsWithRole(username, TeamRole.Participant.toString()));
-    }
-
-    @Override
-    public ResponseEntity<?> getObserverProjects(String username) {
-        return ResponseEntity.ok(mapper.getProjectsWithRole(username, TeamRole.Observer.toString()));
+    public ResponseEntity<?> getProjectsWithRole(String username, String role) {
+        return switch (role) {
+            case "participant" -> ResponseEntity.ok(repository.getProjectsWithRole(username, TeamRole.Participant.toString()));
+            case "observer" -> ResponseEntity.ok(repository.getProjectsWithRole(username, TeamRole.Observer.toString()));
+            default -> null;
+        };
     }
 
 }

@@ -34,3 +34,6 @@ INSERT INTO tasks (category, creator, task_id, header)
 VALUES (2, 'kolya_kha', 3, 'Task 3');
 INSERT INTO tasks (category, creator, task_id, header)
 VALUES (3,'yunya', 4, 'Task 4');
+
+INSERT INTO tasks (category, creator, task_id, header, creation_date)
+VALUES (3,'yunya', 15, 'Task 4', '2025-02-19 23:42:38.951409');

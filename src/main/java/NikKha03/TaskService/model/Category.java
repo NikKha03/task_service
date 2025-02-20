@@ -19,12 +19,13 @@ public class Category {
     @NotNull
     private String name;
 
+    @NotNull
     @ManyToOne()
     @JoinColumn(name = "project", nullable = false)
     @JsonIgnore()
     private Project project;
 
-    @OneToMany()
+    @OneToMany(mappedBy = "category")
     private List<Task> tasks;
 
 }

@@ -39,14 +39,9 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getMyProjects(username));
     }
 
-    @GetMapping("/participant")
-    public ResponseEntity<?> getParticipantProjects(@RequestParam String username) {
-        return ResponseEntity.ok(projectService.getParticipantProjects(username));
-    }
-
-    @GetMapping("/observer")
-    public ResponseEntity<?> getObserverProjects(@RequestParam String username) {
-        return ResponseEntity.ok(projectService.getObserverProjects(username));
+    @GetMapping("/getWithRole")
+    public ResponseEntity<?> getProjectsWithRole(@RequestParam String username, @RequestParam String role) {
+        return ResponseEntity.ok(projectService.getProjectsWithRole(username, role));
     }
 
 }

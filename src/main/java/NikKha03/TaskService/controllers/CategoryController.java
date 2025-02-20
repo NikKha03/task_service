@@ -18,19 +18,19 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("/createCategory")
+    @PostMapping("/create")
     public ResponseEntity<?> createCategory(@RequestBody CategoryRequest request) {
         return categoryService.createCategory(request);
     }
 
     @Transactional
-    @PutMapping("/changeCategory/{categoryId}")
+    @PutMapping("/change/{categoryId}")
     public ResponseEntity<?> changeCategory(@PathVariable("categoryId") Long categoryId, @RequestBody CategoryRequest request) {
         return categoryService.changeCategory(categoryId, request);
     }
 
     @Transactional
-    @DeleteMapping("/deleteCategory/{categoryId}")
+    @DeleteMapping("/delete/{categoryId}")
     public void deleteCategory(@PathVariable("categoryId") Long categoryId) {
         categoryService.deleteCategory(categoryId);
     }

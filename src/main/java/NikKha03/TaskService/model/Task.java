@@ -30,6 +30,7 @@ public class Task {
     // кто выполнил задачу (username пользователя, полученный из keycloak)
     private String implementer;
 
+    @NotNull
     @ManyToOne()
     @JoinColumn(name = "category", nullable = false)
     @JsonIgnore()
@@ -44,6 +45,7 @@ public class Task {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime plannedImplDate;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 

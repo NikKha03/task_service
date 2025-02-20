@@ -13,8 +13,6 @@ public interface ProjectService {
 
     ResponseEntity<?> getMyProjects(String username);
 
-    ResponseEntity<?> getParticipantProjects(String username);
-
-    ResponseEntity<?> getObserverProjects(String username);
+    ResponseEntity<?> getProjectsWithRole(String username, String role);
 
 }
