@@ -18,16 +18,18 @@ public class Project {
     @NotNull
     private String name;
 
-    // id пользователя, полученное из keycloak
     @NotNull
-    @Column(name = "project_owner")
     private String projectOwner;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ProjectOwnerType projectOwnerType;
+
     @OneToMany(mappedBy = "project")
-    private List<Category> categories;
+    private List<Tab> tabs;
 
     // команда, работающая над проектом
     @OneToMany(mappedBy = "project")
-    private List<User> team;
+    private List<UserInProject> team;
 
 }

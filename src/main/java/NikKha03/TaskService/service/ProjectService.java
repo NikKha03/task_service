@@ -1,7 +1,10 @@
 package NikKha03.TaskService.service;
 
 import NikKha03.TaskService.DTO.ProjectRequest;
+import NikKha03.TaskService.model.Project;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 public interface ProjectService {
 
@@ -11,8 +14,10 @@ public interface ProjectService {
 
     void deleteProject(Long projectId);
 
-    ResponseEntity<?> getMyProjects(String username);
+    ResponseEntity<List<Project>> getMyProjects(String username);
 
-    ResponseEntity<?> getProjectsWithRole(String username, String role);
+    ResponseEntity<List<Project>> getOtherProjects(String username);
+
+//    ResponseEntity<?> getProjectsWithRole(String username, String role);
 
 }

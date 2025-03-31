@@ -1,11 +1,16 @@
 package NikKha03.TaskService.controllers;
 
 import NikKha03.TaskService.DTO.ProjectRequest;
+import NikKha03.TaskService.model.Project;
 import NikKha03.TaskService.service.ProjectService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Tag(name = "project_controller")
 @RestController
@@ -16,6 +21,18 @@ public class ProjectController {
 
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<?> getMyProjects(@RequestParam String username) {
+        ResponseEntity<List<Project>> myProjects = projectService.getMyProjects(username);
+        ResponseEntity<List<Project>> otherProjects = projectService.getOtherProjects(username);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("myProjects", myProjects.getBody());
+        response.put("otherProjects", otherProjects.getBody());
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/create")
@@ -34,14 +51,9 @@ public class ProjectController {
         projectService.deleteProject(projectId);
     }
 
-    @GetMapping("/my")
-    public ResponseEntity<?> getMyProjects(@RequestParam String username) {
-        return ResponseEntity.ok(projectService.getMyProjects(username));
-    }
-
-    @GetMapping("/getWithRole")
-    public ResponseEntity<?> getProjectsWithRole(@RequestParam String username, @RequestParam String role) {
-        return ResponseEntity.ok(projectService.getProjectsWithRole(username, role));
-    }
+//    @GetMapping("/getWithRole")
+//    public ResponseEntity<?> getProjectsWithRole(@RequestParam String username, @RequestParam String role) {
+//        return ResponseEntity.ok(projectService.getProjectsWithRole(username, role));
+//    }
 
 }

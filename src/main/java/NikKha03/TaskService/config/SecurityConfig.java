@@ -1,5 +1,7 @@
 package NikKha03.TaskService.config;
 
+import NikKha03.TaskService.component.OriginFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -23,8 +25,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(httpSecurityCorsConfigurer ->
-                        httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+//                .cors(httpSecurityCorsConfigurer ->
+//                        httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
@@ -34,17 +36,26 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("localhost"));
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
+//    @Bean
+//    public FilterRegistrationBean<OriginFilter> originFilterBean() {
+//        FilterRegistrationBean<OriginFilter> registrationBean = new FilterRegistrationBean<>();
+//        registrationBean.setFilter(new OriginFilter());
+//        registrationBean.addUrlPatterns("/task_serviceTEST/*");  // Применение фильтра только к определённым путям
+//        return registrationBean;
+//    }
 
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", configuration);
 
-        return urlBasedCorsConfigurationSource;
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(List.of("http://localhost","http://localhost:5175"));
+//        configuration.addAllowedHeader("*");
+//        configuration.addAllowedMethod("*");
+//        configuration.setAllowCredentials(true);
+//
+//        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+//        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", configuration);
+//
+//        return urlBasedCorsConfigurationSource;
+//    }
 }

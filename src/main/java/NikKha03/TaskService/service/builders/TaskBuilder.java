@@ -1,6 +1,6 @@
 package NikKha03.TaskService.service.builders;
 
-import NikKha03.TaskService.model.Category;
+import NikKha03.TaskService.model.Tab;
 import NikKha03.TaskService.model.Task;
 import NikKha03.TaskService.model.TaskStatus;
 
@@ -32,13 +32,13 @@ public class TaskBuilder {
         return this;
     }
 
-    public TaskBuilder setCategory(Category category) {
-        task.setCategory(category);
+    public TaskBuilder setTab(Tab tab) {
+        task.setTab(tab);
         return this;
     }
 
-    public TaskBuilder setPlannedImplDate(LocalDateTime dateTimeOfTask) {
-        task.setPlannedImplDate(dateTimeOfTask);
+    public TaskBuilder setDeadline(LocalDateTime deadline) {
+        task.setDeadline(deadline);
         return this;
     }
 

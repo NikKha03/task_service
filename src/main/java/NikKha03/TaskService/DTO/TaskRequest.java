@@ -10,7 +10,7 @@ import NikKha03.TaskService.model.TaskStatus;
 @Getter
 public class TaskRequest {
 
-    private Long categoryId;
+    private Long tabId;
 
     private String header;
 
@@ -23,8 +23,8 @@ public class TaskRequest {
     public TaskRequest() {
     }
 
-    public TaskRequest(Long categoryId, String header) {
-        this.categoryId = categoryId;
+    public TaskRequest(Long tabId, String header) {
+        this.tabId = tabId;
         this.header = header;
     }
 }

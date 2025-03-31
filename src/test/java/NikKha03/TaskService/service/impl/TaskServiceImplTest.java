@@ -1,7 +1,7 @@
 package NikKha03.TaskService.service.impl;
 
 import NikKha03.TaskService.DTO.TaskRequest;
-import NikKha03.TaskService.repository.CategoryRepository;
+import NikKha03.TaskService.repository.TabRepository;
 import NikKha03.TaskService.repository.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ class TaskServiceImplTest {
     private TaskRepository taskRepository;
 
     @Mock
-    private CategoryRepository categoryRepository;
+    private TabRepository categoryRepository;
 
     @InjectMocks
     private TaskServiceImpl serviceImpl;

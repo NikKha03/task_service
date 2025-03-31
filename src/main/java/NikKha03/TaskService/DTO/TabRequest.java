@@ -7,7 +7,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public class CategoryRequest {
+public class TabRequest {
 
     private String name;
 

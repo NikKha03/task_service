@@ -16,7 +16,7 @@ public interface TaskService {
 
     Task findTaskById(Long id);
 
-    List<Task> getByCategory(Long categoryId);
+    List<Task> getByTab(Long tabId);
 
     List<Task> getTasksByStatus(String implementer, String status);
 

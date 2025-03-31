@@ -32,9 +32,9 @@ public class Task {
 
     @NotNull
     @ManyToOne()
-    @JoinColumn(name = "category", nullable = false)
+    @JoinColumn(name = "tab", nullable = false)
     @JsonIgnore()
-    private Category category;
+    private Tab tab;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime creationDate;
@@ -43,7 +43,7 @@ public class Task {
     private LocalDateTime executionDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime plannedImplDate;
+    private LocalDateTime deadline;
 
     @NotNull
     @Enumerated(EnumType.STRING)

@@ -28,9 +28,9 @@ public class TaskController {
     Поэтому, один из параметров может быть null!
     */
 
-    @GetMapping("/byCategory/{categoryId}")
-    public List<Task> getByCategory(@PathVariable("categoryId") Long categoryId) {
-        return taskService.getByCategory(categoryId);
+    @GetMapping("/byTab/{tabId}")
+    public List<Task> getByTab(@PathVariable("tabId") Long tabId) {
+        return taskService.getByTab(tabId);
     }
 
     // задачи, которые нужно сделать

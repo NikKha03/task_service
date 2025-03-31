@@ -9,12 +9,12 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "tabs")
+public class Tab {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+    private Long tabId;
 
     @NotNull
     private String name;
@@ -25,7 +25,7 @@ public class Category {
     @JsonIgnore()
     private Project project;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "tab")
     private List<Task> tasks;
 
 }

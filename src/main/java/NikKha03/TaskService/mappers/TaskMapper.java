@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 public interface TaskMapper {
 
-    @Select("SELECT * FROM tasks WHERE category=#{categoryId}")
-    List<Task> getTasksByCategory(@Param("categoryId") Long categoryId);
+    @Select("SELECT * FROM tasks WHERE tab=#{tabId}")
+    List<Task> getTasksByTab(@Param("tabId") Long tabId);
 
     @Select("SELECT * FROM tasks WHERE implementer=#{implementer} AND status=#{status}")
     List<Task> getTasksByImplementerAndStatus(@Param("implementer") String implementer, @Param("status") String status);
