@@ -25,11 +25,11 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private ProjectOwnerType projectOwnerType;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Tab> tabs;
 
     // команда, работающая над проектом
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<UserInProject> team;
 
 }

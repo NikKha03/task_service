@@ -81,8 +81,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void deleteProject(Long projectId) {
-        userRepository.deleteByProject(projectId);
-        tabRepository.deleteByProject(projectId);
+//        userRepository.deleteByProject(projectId);
+//        tabRepository.deleteByProject(projectId);
         repository.deleteById(projectId);
     }
 
