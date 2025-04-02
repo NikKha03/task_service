@@ -16,9 +16,11 @@ public class TaskRequest {
 
     private String comment;
 
-    private String plannedImplDate;
+    private String deadline;
 
     private TaskStatus taskStatus;
+
+    private String implementer;
 
     public TaskRequest() {
     }

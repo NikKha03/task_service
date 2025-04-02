@@ -25,7 +25,7 @@ public class Tab {
     @JsonIgnore()
     private Project project;
 
-    @OneToMany(mappedBy = "tab")
+    @OneToMany(mappedBy = "tab", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
 }

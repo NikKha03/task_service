@@ -72,8 +72,11 @@ public class TaskServiceImpl implements TaskService {
         if (!tabRepository.existsById(request.getTabId())) {
             return ResponseEntity.badRequest().body("Tab doesn't exist");
         }
+
+        // TODO Не нравится, что надо доставать вкладку из бд
         Tab tab = tabRepository.findById(request.getTabId()).orElse(null);
 
+        // TODO Добавить сохранение исполнителя
         TaskBuilder taskBuilder = new TaskBuilder()
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
@@ -81,9 +84,9 @@ public class TaskServiceImpl implements TaskService {
                 .setTab(tab)
                 .setCreationDate();
 
-        if (request.getPlannedImplDate() != null) {
+        if (request.getDeadline() != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getPlannedImplDate(), formatter);
+            LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDeadline(), formatter);
             taskBuilder.setDeadline(dateTimeOfTask)
                     .setTaskStatus(TaskStatus.AWAITING_COMPLETION);
         } else {
@@ -104,21 +107,17 @@ public class TaskServiceImpl implements TaskService {
             return ResponseEntity.badRequest().body("Invalid taskId or TabId");
         }
         Task task = repository.findById(taskId).orElse(null);
-        Tab tab = tabRepository.findById(request.getTabId()).orElse(null);
 
+        // TODO Добавить изменение исполнителя
         TaskBuilder taskBuilder = new TaskBuilder(task)
                 .setHeader(request.getHeader())
-                .setComment(request.getComment())
-                .setTab(tab)
-                .setCreationDate();
+                .setComment(request.getComment());
 
-        if (request.getPlannedImplDate() != null && request.getPlannedImplDate().length() >= 10) {
+        if (request.getDeadline() != null && request.getDeadline().length() >= 10) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getPlannedImplDate(), formatter);
-            if (task.getTaskStatus().equals(TaskStatus.WITHOUT_DATE_IMPL)) {
-                taskBuilder.setDeadline(dateTimeOfTask)
-                        .setTaskStatus(TaskStatus.AWAITING_COMPLETION);
-            }
+            LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDeadline(), formatter);
+            taskBuilder.setDeadline(dateTimeOfTask)
+                    .setTaskStatus(TaskStatus.AWAITING_COMPLETION);
         } else {
             taskBuilder.setDeadline(null)
                     .setTaskStatus(TaskStatus.WITHOUT_DATE_IMPL);
@@ -129,6 +128,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task setStatus(Long taskId, TaskStatus status, boolean resetExecutionDate) {
+        // TODO Переписать на чистый SQL
         Task task = repository.findById(taskId).orElse(null);
         if (task == null) return null;
 

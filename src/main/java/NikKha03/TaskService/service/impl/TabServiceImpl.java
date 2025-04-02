@@ -42,10 +42,7 @@ public class TabServiceImpl implements TabService {
         }
 
         Tab tab = repository.findById(tabId).orElse(null);
-        Project project = projectRepository.findById(request.getProjectId()).orElse(null);
-
         tab.setName(request.getName());
-        tab.setProject(project);
 
         return ResponseEntity.ok(repository.save(tab));
     }
