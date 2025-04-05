@@ -87,6 +87,28 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ResponseEntity<Project> getProject(Long id, String username) {
+        Project project = repository.findById(id).orElse(null);
+        boolean isMember = false;
+
+        if (project != null) {
+            List<UserInProject> team = project.getTeam();
+            for (UserInProject userInProject : team) {
+                if (userInProject.getUsername().equals(username))
+                    isMember = true;
+            }
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        if (isMember) {
+            return ResponseEntity.ok(project);
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @Override
     public ResponseEntity<List<Project>> getMyProjects(String username) {
         return ResponseEntity.ok(repository.getMyProjects(username));
     }

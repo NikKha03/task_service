@@ -18,6 +18,8 @@ public interface ProjectService {
 
     ResponseEntity<List<Project>> getOtherProjects(String username);
 
+    ResponseEntity<Project> getProject(Long id, String username);
+
 //    ResponseEntity<?> getProjectsWithRole(String username, String role);
 
 }
