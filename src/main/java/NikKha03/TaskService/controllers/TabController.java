@@ -19,7 +19,7 @@ public class TabController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createCategory(@RequestBody TabRequest request) {
+    public ResponseEntity<?> createTab(@RequestBody TabRequest request) {
         return tabService.createTab(request);
     }
 
