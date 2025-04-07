@@ -6,6 +6,7 @@ import NikKha03.TaskService.model.TaskStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TaskService {
 
@@ -16,7 +17,7 @@ public interface TaskService {
 
     Task findTaskById(Long id);
 
-    List<Task> getByTab(Long tabId);
+    Map<String, Object> getByTab(Long tabId);
 
     List<Task> getTasksByStatus(String implementer, String status);
 

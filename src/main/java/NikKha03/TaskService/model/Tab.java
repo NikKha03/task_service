@@ -22,10 +22,11 @@ public class Tab {
     @NotNull
     @ManyToOne()
     @JoinColumn(name = "project", nullable = false)
-    @JsonIgnore()
+    @JsonIgnore
     private Project project;
 
     @OneToMany(mappedBy = "tab", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Task> tasks;
 
 }

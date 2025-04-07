@@ -11,10 +11,10 @@ import java.util.List;
 @Mapper
 public interface TaskMapper {
 
-    @Select("SELECT * FROM tasks WHERE tab=#{tabId}")
-    List<Task> getTasksByTab(@Param("tabId") Long tabId);
+    @Select("SELECT * FROM tasks WHERE tab=#{tabId} AND task_status=#{status}")
+    List<Task> getTasksByTabAndStatus(@Param("tabId") Long tabId, @Param("status") String status);
 
-    @Select("SELECT * FROM tasks WHERE implementer=#{implementer} AND status=#{status}")
+    @Select("SELECT * FROM tasks WHERE implementer=#{implementer} AND task_status=#{status}")
     List<Task> getTasksByImplementerAndStatus(@Param("implementer") String implementer, @Param("status") String status);
 
 }

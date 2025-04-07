@@ -1,5 +1,5 @@
 package NikKha03.TaskService.model;
 
 public enum ProjectOwnerType {
-    INDIVIDUAL_USER, COMPANY
+    INDIVIDUAL_USER, SEVERAL_USERS, COMPANY
 }

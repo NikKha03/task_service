@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "task_controller")
 @RestController
@@ -29,7 +30,7 @@ public class TaskController {
     */
 
     @GetMapping("/byTab/{tabId}")
-    public List<Task> getByTab(@PathVariable("tabId") Long tabId) {
+    public Map<String, Object> getByTab(@PathVariable("tabId") Long tabId) {
         return taskService.getByTab(tabId);
     }
 

@@ -17,7 +17,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -35,8 +37,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getByTab(Long tabId) {
-        return mapper.getTasksByTab(tabId);
+    public  Map<String, Object> getByTab(Long tabId) {
+        Map<String, Object> response = new HashMap<>();
+        response.put(TaskStatus.AWAITING_COMPLETION.toString(), mapper.getTasksByTabAndStatus(tabId, "AWAITING_COMPLETION"));
+        response.put(TaskStatus.IN_PROGRESS.toString(), mapper.getTasksByTabAndStatus(tabId, "IN_PROGRESS"));
+        response.put(TaskStatus.COMPLETED.toString(), mapper.getTasksByTabAndStatus(tabId, "COMPLETED"));
+
+        return response;
     }
 
     @Override
