@@ -10,7 +10,7 @@ import java.io.IOException;
 @Component
 public class OriginFilter implements Filter {
 
-    private static final String ALLOWED_FRONTEND_ORIGIN = "http://109.196.102.221"; // Адрес frontend
+    private static final String ALLOWED_FRONTEND_ORIGIN = "https://tracker.sharpbubbles.ru"; // Адрес frontend
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
