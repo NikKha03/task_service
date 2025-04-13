@@ -2,10 +2,8 @@ package NikKha03.TaskService.service.impl;
 
 import NikKha03.TaskService.DTO.ProjectRequest;
 import NikKha03.TaskService.mappers.ProjectMapper;
-import NikKha03.TaskService.model.Project;
-import NikKha03.TaskService.model.ProjectRole;
-import NikKha03.TaskService.model.Tab;
-import NikKha03.TaskService.model.UserInProject;
+import NikKha03.TaskService.model.*;
+import NikKha03.TaskService.repository.ProjectOwnerRepository;
 import NikKha03.TaskService.repository.ProjectRepository;
 import NikKha03.TaskService.repository.TabRepository;
 import NikKha03.TaskService.repository.UserRepository;
@@ -23,12 +21,14 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository repository;
     private final ProjectMapper mapper;
 
+    private final ProjectOwnerRepository projectOwnerRepository;
     private final UserRepository userRepository;
     private final TabRepository tabRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, UserRepository userRepository, TabRepository tabRepository) {
-        this.repository = projectRepository;
-        this.mapper = projectMapper;
+    public ProjectServiceImpl(ProjectRepository repository, ProjectMapper mapper, ProjectOwnerRepository projectOwnerRepository, UserRepository userRepository, TabRepository tabRepository) {
+        this.repository = repository;
+        this.mapper = mapper;
+        this.projectOwnerRepository = projectOwnerRepository;
         this.userRepository = userRepository;
         this.tabRepository = tabRepository;
     }
@@ -40,8 +40,9 @@ public class ProjectServiceImpl implements ProjectService {
 
         // Создаем проект
         Project project = new Project();
+        ProjectOwner owner = projectOwnerRepository.findById(request.getProjectOwner()).orElse(null);
         project.setName(request.getName());
-        project.setProjectOwner(request.getProjectOwner());
+        project.setProjectOwner(owner);
         project.setProjectOwnerType(request.getProjectOwnerType());
         repository.save(project);
 

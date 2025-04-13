@@ -18,8 +18,9 @@ public class Project {
     @NotNull
     private String name;
 
-    @NotNull
-    private String projectOwner;
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private ProjectOwner projectOwner;
 
     @NotNull
     @Enumerated(EnumType.STRING)

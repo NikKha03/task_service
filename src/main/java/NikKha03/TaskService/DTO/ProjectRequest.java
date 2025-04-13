@@ -12,7 +12,7 @@ public class ProjectRequest {
 
     private String name;
 
-    private String projectOwner;
+    private Long projectOwner;
 
     private ProjectOwnerType projectOwnerType;
 

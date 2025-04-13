@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
+    // TODO: фильтрацию по project_owner_type нужно исправить
     @Query(value = "SELECT p.* FROM projects p JOIN projects_users pu ON pu.project = p.project_id WHERE p.project_owner_type='INDIVIDUAL_USER' AND pu.username=:username AND pu.role_in_project='CREATOR'", nativeQuery = true)
     List<Project> getMyProjects(@Param("username") String username);
 

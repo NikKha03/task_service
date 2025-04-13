@@ -19,15 +19,15 @@ public class OriginFilter implements Filter {
         String origin = httpRequest.getHeader("Origin");
 
         // Проверка заголовка Origin
-        if (origin != null && origin.equals(ALLOWED_FRONTEND_ORIGIN)) {
-            chain.doFilter(request, response); // Если запрос с правильным Origin, пропускаем
-        } else {
-            response.getWriter().write("Forbidden: Invalid Origin");
-            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_FORBIDDEN);
-        }
+//        if (origin != null && origin.equals(ALLOWED_FRONTEND_ORIGIN)) {
+//            chain.doFilter(request, response); // Если запрос с правильным Origin, пропускаем
+//        } else {
+//            response.getWriter().write("Forbidden: Invalid Origin");
+//            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_FORBIDDEN);
+//        }
 
         // На время разработки/тестирования
-//        chain.doFilter(request, response); // Если запрос с правильным Origin, пропускаем
+        chain.doFilter(request, response); // Если запрос с правильным Origin, пропускаем
     }
 
     @Override
