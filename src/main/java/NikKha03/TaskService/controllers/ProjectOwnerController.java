@@ -1,11 +1,9 @@
 package NikKha03.TaskService.controllers;
 
-import NikKha03.TaskService.DTO.TabRequest;
 import NikKha03.TaskService.DTO.UserRequest;
 import NikKha03.TaskService.model.User;
 import NikKha03.TaskService.repository.ProjectOwnerRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "project_owner_controller")
