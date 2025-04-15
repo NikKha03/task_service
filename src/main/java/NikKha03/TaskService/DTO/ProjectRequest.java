@@ -1,6 +1,6 @@
 package NikKha03.TaskService.DTO;
 
-import NikKha03.TaskService.model.ProjectOwnerType;
+import NikKha03.TaskService.model.ProjectType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,7 @@ public class ProjectRequest {
 
     private Long projectOwner;
 
-    private ProjectOwnerType projectOwnerType;
+    private ProjectType projectType;
 
     // username пользователя из keycloak, который создает проект
     private String principalUser;

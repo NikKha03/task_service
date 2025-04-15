@@ -1,10 +1,14 @@
 package NikKha03.TaskService.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.List;
+
+@Data
 @Entity
 public class User extends ProjectOwner {
 
@@ -16,19 +20,8 @@ public class User extends ProjectOwner {
     @NotNull
     String userId;
 
-    public String getUsername() {
-        return username;
-    }
+    @ManyToMany(mappedBy = "employees")
+    @JsonIgnore()
+    private List<Company> companyId;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }

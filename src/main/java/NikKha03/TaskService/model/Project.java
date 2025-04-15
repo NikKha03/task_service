@@ -1,5 +1,6 @@
 package NikKha03.TaskService.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -18,13 +19,14 @@ public class Project {
     @NotNull
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private ProjectOwner projectOwner;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private ProjectOwnerType projectOwnerType;
+    private ProjectType projectType;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Tab> tabs;

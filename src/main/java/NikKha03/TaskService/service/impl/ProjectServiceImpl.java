@@ -35,15 +35,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResponseEntity<?> createProject(ProjectRequest request) {
-        if (request.getProjectOwner() == null || request.getName() == null)
-            return ResponseEntity.badRequest().body("Empty projectOwner or name");
+        if ( request.getName() == null)
+            return ResponseEntity.badRequest().body("Empty project name");
 
         // Создаем проект
         Project project = new Project();
-        ProjectOwner owner = projectOwnerRepository.findById(request.getProjectOwner()).orElse(null);
         project.setName(request.getName());
-        project.setProjectOwner(owner);
-        project.setProjectOwnerType(request.getProjectOwnerType());
+        if (!request.getProjectType().equals(ProjectType.COMPANY)) {
+            project.setProjectOwner(projectOwnerRepository.findByUsername(request.getPrincipalUser()));
+        } else {
+            project.setProjectOwner(projectOwnerRepository.findById(request.getProjectOwner()).orElse(null));
+        }
+        project.setProjectType(request.getProjectType());
         repository.save(project);
 
         // Добавляем создателя к участникам проекта
