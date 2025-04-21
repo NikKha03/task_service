@@ -32,6 +32,11 @@ public class TaskBuilder {
         return this;
     }
 
+    public TaskBuilder setImplementer(String implementer) {
+        task.setImplementer(implementer);
+        return this;
+    }
+
     public TaskBuilder setTab(Tab tab) {
         task.setTab(tab);
         return this;

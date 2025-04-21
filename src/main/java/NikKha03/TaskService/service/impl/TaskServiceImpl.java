@@ -40,6 +40,7 @@ public class TaskServiceImpl implements TaskService {
     public  Map<String, Object> getByTab(Long tabId) {
         Map<String, Object> response = new HashMap<>();
         response.put(TaskStatus.AWAITING_COMPLETION.toString(), mapper.getTasksByTabAndStatus(tabId, "AWAITING_COMPLETION"));
+        response.put(TaskStatus.WITHOUT_DATE_IMPL.toString(), mapper.getTasksByTabAndStatus(tabId, "WITHOUT_DATE_IMPL"));
         response.put(TaskStatus.IN_PROGRESS.toString(), mapper.getTasksByTabAndStatus(tabId, "IN_PROGRESS"));
         response.put(TaskStatus.COMPLETED.toString(), mapper.getTasksByTabAndStatus(tabId, "COMPLETED"));
 
@@ -88,16 +89,15 @@ public class TaskServiceImpl implements TaskService {
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
                 .setCreator(creator)
+                .setImplementer(request.getImplementer())
                 .setTab(tab)
-                .setCreationDate();
+                .setCreationDate()
+                .setTaskStatus(request.getTaskStatus());
 
-        if (request.getDeadline() != null) {
+        if (request.getDeadline() != null && request.getDeadline().length() >= 10) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDeadline(), formatter);
-            taskBuilder.setDeadline(dateTimeOfTask)
-                    .setTaskStatus(TaskStatus.AWAITING_COMPLETION);
-        } else {
-            taskBuilder.setTaskStatus(TaskStatus.WITHOUT_DATE_IMPL);
+            taskBuilder.setDeadline(dateTimeOfTask);
         }
 
         return ResponseEntity.ok(repository.save(taskBuilder.build()));
@@ -118,16 +118,17 @@ public class TaskServiceImpl implements TaskService {
         // TODO Добавить изменение исполнителя
         TaskBuilder taskBuilder = new TaskBuilder(task)
                 .setHeader(request.getHeader())
-                .setComment(request.getComment());
+                .setComment(request.getComment())
+                .setTaskStatus(request.getTaskStatus())
+                .setImplementer(request.getImplementer());
 
         if (request.getDeadline() != null && request.getDeadline().length() >= 10) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDeadline(), formatter);
-            taskBuilder.setDeadline(dateTimeOfTask)
-                    .setTaskStatus(TaskStatus.AWAITING_COMPLETION);
+            taskBuilder.setDeadline(dateTimeOfTask);
+//                    .setTaskStatus(TaskStatus.AWAITING_COMPLETION);
         } else {
-            taskBuilder.setDeadline(null)
-                    .setTaskStatus(TaskStatus.WITHOUT_DATE_IMPL);
+            taskBuilder.setDeadline(null);
         }
 
         return ResponseEntity.ok(repository.save(taskBuilder.build()));
