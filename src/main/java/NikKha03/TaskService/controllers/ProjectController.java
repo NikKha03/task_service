@@ -57,6 +57,11 @@ public class ProjectController {
         projectService.deleteProject(projectId);
     }
 
+    @PostMapping("/invite/{username}/{projectId}")
+    public ResponseEntity<?> inviteProject(@PathVariable String username, @PathVariable Long projectId) {
+        return projectService.inviteInProject(username, projectId);
+    }
+
 //    @GetMapping("/getWithRole")
 //    public ResponseEntity<?> getProjectsWithRole(@RequestParam String username, @RequestParam String role) {
 //        return ResponseEntity.ok(projectService.getProjectsWithRole(username, role));

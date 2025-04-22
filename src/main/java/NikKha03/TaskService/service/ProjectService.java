@@ -20,6 +20,8 @@ public interface ProjectService {
 
     ResponseEntity<Project> getProject(Long id, String username);
 
+    ResponseEntity<?> inviteInProject(String username, Long projectId);
+
 //    ResponseEntity<?> getProjectsWithRole(String username, String role);
 
 }

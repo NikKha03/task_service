@@ -5,9 +5,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
-@Table(name = "projects_users")
+@Table(name = "users_in_projects")
 public class UserInProject {
 
     @Id
@@ -23,9 +26,12 @@ public class UserInProject {
     @JsonIgnore()
     private Project project;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private ProjectRole roleInProject;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "project_member_roles",
+            joinColumns = @JoinColumn(name = "user_in_project_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_in_project_id"))
+    private List<RolesInProject> roles = new ArrayList<>();
 
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JsonIgnore()

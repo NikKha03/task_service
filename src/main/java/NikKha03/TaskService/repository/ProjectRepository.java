@@ -10,13 +10,17 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     // TODO: фильтрацию по project_owner_type нужно исправить
-    @Query(value = "SELECT p.* FROM projects p JOIN projects_users pu ON pu.project = p.project_id WHERE (p.project_type='INDIVIDUAL_USER' OR p.project_type='SEVERAL_USERS') AND pu.username=:username AND pu.role_in_project='CREATOR'", nativeQuery = true)
+    @Query(value =
+            "SELECT p.* FROM projects p JOIN users_in_projects pu ON pu.project = p.project_id WHERE p.project_type != 'COMPANY' AND pu.username = :username AND EXISTS (SELECT 1 FROM project_member_roles pmr JOIN roles_in_project r ON r.id = pmr.role_in_project_id WHERE pmr.user_in_project_id = pu.id AND r.name = 'CREATOR');"
+            , nativeQuery = true)
     List<Project> getMyProjects(@Param("username") String username);
 
-    @Query(value = "SELECT p.* FROM projects p JOIN projects_users pu ON pu.project = p.project_id WHERE (p.project_type='INDIVIDUAL_USER' OR p.project_type='SEVERAL_USERS') AND pu.username=:username AND pu.role_in_project!='CREATOR'", nativeQuery = true)
+    @Query(value =
+            "SELECT p.* FROM projects p JOIN users_in_projects pu ON pu.project = p.project_id WHERE p.project_type != 'COMPANY' AND pu.username = :username AND NOT EXISTS (SELECT 1 FROM project_member_roles pmr JOIN roles_in_project r ON r.id = pmr.role_in_project_id WHERE pmr.user_in_project_id = pu.id AND r.name = 'CREATOR');"
+            , nativeQuery = true)
     List<Project> getOtherProjects(@Param("username") String username);
 
-    @Query(value = "SELECT p.* FROM projects p JOIN users_projects u ON u.project = p.project_id WHERE u.username=:username AND u.role=:role", nativeQuery = true)
+    @Query(value = "SELECT p.* FROM projects p JOIN users_in_projects u ON u.project = p.project_id WHERE u.username=:username AND u.role=:role", nativeQuery = true)
     List<Project> getProjectsWithRole(@Param("username") String username, @Param("role") String role);
 
 }

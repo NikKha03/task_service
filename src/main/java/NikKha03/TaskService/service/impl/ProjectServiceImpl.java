@@ -1,12 +1,8 @@
 package NikKha03.TaskService.service.impl;
 
 import NikKha03.TaskService.DTO.ProjectRequest;
-import NikKha03.TaskService.mappers.ProjectMapper;
 import NikKha03.TaskService.model.*;
-import NikKha03.TaskService.repository.ProjectOwnerRepository;
-import NikKha03.TaskService.repository.ProjectRepository;
-import NikKha03.TaskService.repository.TabRepository;
-import NikKha03.TaskService.repository.UserRepository;
+import NikKha03.TaskService.repository.*;
 import NikKha03.TaskService.service.ProjectService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +15,23 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository repository;
-    private final ProjectMapper mapper;
 
     private final ProjectOwnerRepository projectOwnerRepository;
-    private final UserRepository userRepository;
+    private final UserInProjectRepository userInProjectRepository;
     private final TabRepository tabRepository;
+    private final RolesInProjectRepository rolesInProjectRepository;
 
-    public ProjectServiceImpl(ProjectRepository repository, ProjectMapper mapper, ProjectOwnerRepository projectOwnerRepository, UserRepository userRepository, TabRepository tabRepository) {
+    public ProjectServiceImpl(ProjectRepository repository, ProjectOwnerRepository projectOwnerRepository, UserInProjectRepository userInProjectRepository, TabRepository tabRepository, RolesInProjectRepository rolesInProjectRepository) {
         this.repository = repository;
-        this.mapper = mapper;
         this.projectOwnerRepository = projectOwnerRepository;
-        this.userRepository = userRepository;
+        this.userInProjectRepository = userInProjectRepository;
         this.tabRepository = tabRepository;
+        this.rolesInProjectRepository = rolesInProjectRepository;
     }
 
     @Override
     public ResponseEntity<?> createProject(ProjectRequest request) {
-        if ( request.getName() == null)
+        if (request.getName() == null)
             return ResponseEntity.badRequest().body("Empty project name");
 
         // Создаем проект
@@ -53,8 +49,13 @@ public class ProjectServiceImpl implements ProjectService {
         UserInProject userInProject = new UserInProject();
         userInProject.setProject(project);
         userInProject.setUsername(request.getPrincipalUser());
-        userInProject.setRoleInProject(ProjectRole.CREATOR);
-        userRepository.save(userInProject);
+        List<RolesInProject> roles = new ArrayList<>();
+        // Добавляю роли: CREATOR, ADMIN, MEMBER
+        roles.add(rolesInProjectRepository.findById(1L).orElse(null));
+        roles.add(rolesInProjectRepository.findById(2L).orElse(null));
+        roles.add(rolesInProjectRepository.findById(3L).orElse(null));
+        userInProject.setRoles(roles);
+        userInProjectRepository.save(userInProject);
 
         List<UserInProject> team = new ArrayList<>();
         team.add(userInProject);
@@ -78,6 +79,28 @@ public class ProjectServiceImpl implements ProjectService {
             return ResponseEntity.badRequest().body("New project name is empty");
 
         project.setName(request.getName());
+
+        return ResponseEntity.ok(repository.save(project));
+    }
+
+    @Override
+    public ResponseEntity<?> inviteInProject(String username, Long projectId) {
+        Project project = repository.findById(projectId).orElse(null);
+
+
+        UserInProject invitedUser = new UserInProject();
+        invitedUser.setProject(project);
+        invitedUser.setUsername(username);
+        List<RolesInProject> roles = new ArrayList<>();
+        // Добавляю роль MEMBER
+        roles.add(rolesInProjectRepository.findById(3L).orElse(null));
+        invitedUser.setRoles(roles);
+
+        project.setProjectType(ProjectType.SEVERAL_USERS);
+        List<UserInProject> team = project.getTeam();
+        team.add(invitedUser);
+        project.setTeam(team);
+
 
         return ResponseEntity.ok(repository.save(project));
     }
