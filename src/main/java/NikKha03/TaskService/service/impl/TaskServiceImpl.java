@@ -37,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public  Map<String, Object> getByTab(Long tabId) {
+    public Map<String, Object> getByTab(Long tabId) {
         Map<String, Object> response = new HashMap<>();
         response.put(TaskStatus.AWAITING_COMPLETION.toString(), mapper.getTasksByTabAndStatus(tabId, "AWAITING_COMPLETION"));
         response.put(TaskStatus.WITHOUT_DATE_IMPL.toString(), mapper.getTasksByTabAndStatus(tabId, "WITHOUT_DATE_IMPL"));
@@ -56,23 +56,32 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getInProgressTasks(String implementer) {
         List<Task> tasks = mapper.getTasksByImplementerAndStatus(implementer, TaskStatus.IN_PROGRESS.toString());
         return tasks.stream()
-                .filter(task -> task.getDeadline() != null && task.getDeadline().toLocalDate().isAfter(LocalDate.now()))
-                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .filter(task -> task.getDeadline() != null &&
+                        (task.getDeadline().toLocalDate().isAfter(LocalDate.now()) || task.getDeadline().toLocalDate().isEqual(LocalDate.now())))
+                .sorted(Comparator.comparing(Task::getDeadline).thenComparing(Task::getCreationDate))
                 .toList();
     }
 
     @Override
     public List<Task> getTasksIncomplete(String implementer) {
-        List<Task> tasks = mapper.getTasksByImplementerAndStatus(implementer, TaskStatus.IN_PROGRESS.toString());
-        return tasks.stream()
-                .filter(task -> task.getDeadline() != null && task.getDeadline().toLocalDate().isBefore(LocalDate.now()))
-                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+        List<Task> tasks1 = mapper.getTasksByImplementerAndStatus(implementer, TaskStatus.AWAITING_COMPLETION.toString());
+        List<Task> tasks2 = mapper.getTasksByImplementerAndStatus(implementer, TaskStatus.IN_PROGRESS.toString());
+        tasks2.addAll(tasks1);
+
+        return tasks2.stream()
+                .filter(task -> task.getDeadline() != null && LocalDate.now().isAfter(task.getDeadline().toLocalDate()))
+                .sorted(Comparator.comparing(Task::getDeadline).reversed().thenComparing(Task::getCreationDate))
                 .toList();
     }
 
     @Override
     public List<Task> getTaskWithoutDateImpl(String implementer) {
-        return List.of();
+        List<Task> tasks = mapper.getTasksByImplementerAndStatus(implementer, TaskStatus.WITHOUT_DATE_IMPL.toString());
+        return tasks.stream()
+                .filter(task -> task.getDeadline() != null &&
+                        (task.getDeadline().toLocalDate().isAfter(LocalDate.now()) || task.getDeadline().toLocalDate().isEqual(LocalDate.now())))
+                .sorted(Comparator.comparing(Task::getDeadline).thenComparing(Task::getCreationDate))
+                .toList();
     }
 
     @Override
@@ -94,6 +103,10 @@ public class TaskServiceImpl implements TaskService {
                 .setCreationDate()
                 .setTaskStatus(request.getTaskStatus());
 
+        if (request.getTaskStatus() == TaskStatus.COMPLETED) {
+            taskBuilder.setExecutionDate(LocalDateTime.now());
+        }
+
         if (request.getDeadline() != null && request.getDeadline().length() >= 10) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTimeOfTask = LocalDateTime.parse(request.getDeadline(), formatter);
@@ -110,8 +123,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public ResponseEntity<?> changeTask(Long taskId, TaskRequest request) {
-        if (!repository.existsById(taskId) || !tabRepository.existsById(request.getTabId())) {
-            return ResponseEntity.badRequest().body("Invalid taskId or TabId");
+        if (!repository.existsById(taskId)) {
+            return ResponseEntity.badRequest().body("Invalid taskId");
         }
         Task task = repository.findById(taskId).orElse(null);
 
@@ -119,8 +132,15 @@ public class TaskServiceImpl implements TaskService {
         TaskBuilder taskBuilder = new TaskBuilder(task)
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
-                .setTaskStatus(request.getTaskStatus())
                 .setImplementer(request.getImplementer());
+
+        if (task.getTaskStatus() != TaskStatus.COMPLETED && request.getTaskStatus() == TaskStatus.COMPLETED) {
+            taskBuilder.setExecutionDate(LocalDateTime.now());
+        }
+        if (request.getTaskStatus() != TaskStatus.COMPLETED) {
+            taskBuilder.setExecutionDate(null);
+        }
+        taskBuilder.setTaskStatus(request.getTaskStatus());
 
         if (request.getDeadline() != null && request.getDeadline().length() >= 10) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

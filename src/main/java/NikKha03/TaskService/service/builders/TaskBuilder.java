@@ -52,6 +52,11 @@ public class TaskBuilder {
         return this;
     }
 
+    public TaskBuilder setExecutionDate(LocalDateTime executionDate) {
+        task.setExecutionDate(executionDate);
+        return this;
+    }
+
     public TaskBuilder setTaskStatus(TaskStatus taskStatus) {
         task.setTaskStatus(taskStatus);
         return this;

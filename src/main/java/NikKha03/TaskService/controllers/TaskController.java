@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +39,24 @@ public class TaskController {
     // задачи, которые нужно сделать
     @GetMapping("/awaitingCompletionTasks")
     public List<Task> getAwaitingCompletionTasks(@RequestParam String implementer) {
-        return taskService.getTasksByStatus(implementer, TaskStatus.AWAITING_COMPLETION.toString());
+        List<Task> tasks = taskService.getTasksByStatus(implementer, TaskStatus.AWAITING_COMPLETION.toString());
+        return tasks.stream()
+                .filter(task -> task.getDeadline() != null && (LocalDate.now().isBefore(task.getDeadline().toLocalDate()) || LocalDate.now().isEqual(task.getDeadline().toLocalDate())))
+                .sorted(Comparator.comparing(Task::getDeadline).thenComparing(Task::getCreationDate))
+                .toList();
+    }
+
+    // задачи без даты выполнения
+    @GetMapping("/withoutDateImplTasks")
+    public List<Task> getTaskWithoutDateImpl(@RequestParam String implementer) {
+        List<Task> tasks1 = taskService.getTasksByStatus(implementer, TaskStatus.AWAITING_COMPLETION.toString());
+        List<Task> tasks2 = taskService.getTasksByStatus(implementer, TaskStatus.IN_PROGRESS.toString());
+        tasks2.addAll(tasks1);
+        
+        return tasks2.stream()
+                .filter(task -> task.getDeadline() == null)
+                .sorted(Comparator.comparing(Task::getCreationDate))
+                .toList();
     }
 
     // задачи, которые в работе
@@ -49,19 +68,16 @@ public class TaskController {
     // задачи, которые выполнены
     @GetMapping("/completedTasks")
     public List<Task> getCompletedTask(@RequestParam String implementer) {
-        return  taskService.getTasksByStatus(implementer, TaskStatus.COMPLETED.toString());
+        List<Task> tasks = taskService.getTasksByStatus(implementer, TaskStatus.COMPLETED.toString());
+        return tasks.stream()
+                .sorted(Comparator.comparing(Task::getExecutionDate).reversed().thenComparing(Task::getCreationDate))
+                .toList();
     }
 
     // задачи, которые не были выполнены
     @GetMapping("/incompleteTasks")
     public List<Task> getTasksIncomplete(@RequestParam String implementer) {
         return taskService.getTasksIncomplete(implementer);
-    }
-
-    // задачи без даты выполнения
-    @GetMapping("/withoutDateImplTasks")
-    public List<Task> getTaskWithoutDateImpl(@RequestParam String implementer) {
-        return taskService.getTasksByStatus(implementer, TaskStatus.WITHOUT_DATE_IMPL.toString());
     }
 
     @PostMapping("/create/{creator}")
