@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,10 @@ public class TaskController {
     public List<Task> getAwaitingCompletionTasks(@RequestParam String implementer) {
         List<Task> tasks = taskService.getTasksByStatus(implementer, TaskStatus.AWAITING_COMPLETION.toString());
         return tasks.stream()
-                .filter(task -> task.getDeadline() != null && (LocalDate.now().isBefore(task.getDeadline().toLocalDate()) || LocalDate.now().isEqual(task.getDeadline().toLocalDate())))
+                .filter(task -> task.getDeadline() != null
+                        // && (LocalDate.now().isBefore(task.getDeadline().toLocalDate())
+                        // || LocalDate.now().isEqual(task.getDeadline().toLocalDate()))
+                )
                 .sorted(Comparator.comparing(Task::getDeadline).thenComparing(Task::getCreationDate))
                 .toList();
     }
@@ -52,7 +54,7 @@ public class TaskController {
         List<Task> tasks1 = taskService.getTasksByStatus(implementer, TaskStatus.AWAITING_COMPLETION.toString());
         List<Task> tasks2 = taskService.getTasksByStatus(implementer, TaskStatus.IN_PROGRESS.toString());
         tasks2.addAll(tasks1);
-        
+
         return tasks2.stream()
                 .filter(task -> task.getDeadline() == null)
                 .sorted(Comparator.comparing(Task::getCreationDate))

@@ -56,8 +56,10 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getInProgressTasks(String implementer) {
         List<Task> tasks = mapper.getTasksByImplementerAndStatus(implementer, TaskStatus.IN_PROGRESS.toString());
         return tasks.stream()
-                .filter(task -> task.getDeadline() != null &&
-                        (task.getDeadline().toLocalDate().isAfter(LocalDate.now()) || task.getDeadline().toLocalDate().isEqual(LocalDate.now())))
+                .filter(task -> task.getDeadline() != null
+                        // && task.getDeadline().toLocalDate().isAfter(LocalDate.now()) ||
+                        // (task.getDeadline().toLocalDate().isEqual(LocalDate.now()))
+                )
                 .sorted(Comparator.comparing(Task::getDeadline).thenComparing(Task::getCreationDate))
                 .toList();
     }
