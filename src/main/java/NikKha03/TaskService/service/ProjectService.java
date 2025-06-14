@@ -22,6 +22,8 @@ public interface ProjectService {
 
     ResponseEntity<?> inviteInProject(String username, Long projectId);
 
+    ResponseEntity<?> kickedOut(String username, Long projectId);
+
 //    ResponseEntity<?> getProjectsWithRole(String username, String role);
 
 }

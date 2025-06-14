@@ -62,6 +62,11 @@ public class ProjectController {
         return projectService.inviteInProject(username, projectId);
     }
 
+    @DeleteMapping("/kickedOut/{username}/{projectId}")
+    public ResponseEntity<?> kickedOutProject(@PathVariable String username, @PathVariable Long projectId) {
+        return projectService.kickedOut(username, projectId);
+    }
+
 //    @GetMapping("/getWithRole")
 //    public ResponseEntity<?> getProjectsWithRole(@RequestParam String username, @RequestParam String role) {
 //        return ResponseEntity.ok(projectService.getProjectsWithRole(username, role));

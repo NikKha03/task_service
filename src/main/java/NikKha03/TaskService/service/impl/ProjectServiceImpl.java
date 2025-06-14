@@ -1,6 +1,7 @@
 package NikKha03.TaskService.service.impl;
 
 import NikKha03.TaskService.DTO.ProjectRequest;
+import NikKha03.TaskService.mappers.ProjectMapper;
 import NikKha03.TaskService.model.*;
 import NikKha03.TaskService.repository.*;
 import NikKha03.TaskService.service.ProjectService;
@@ -15,18 +16,20 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository repository;
+    private final ProjectMapper mapper;
 
     private final ProjectOwnerRepository projectOwnerRepository;
     private final UserInProjectRepository userInProjectRepository;
     private final TabRepository tabRepository;
     private final RolesInProjectRepository rolesInProjectRepository;
 
-    public ProjectServiceImpl(ProjectRepository repository, ProjectOwnerRepository projectOwnerRepository, UserInProjectRepository userInProjectRepository, TabRepository tabRepository, RolesInProjectRepository rolesInProjectRepository) {
+    public ProjectServiceImpl(ProjectRepository repository, ProjectOwnerRepository projectOwnerRepository, UserInProjectRepository userInProjectRepository, TabRepository tabRepository, RolesInProjectRepository rolesInProjectRepository, ProjectMapper projectMapper) {
         this.repository = repository;
         this.projectOwnerRepository = projectOwnerRepository;
         this.userInProjectRepository = userInProjectRepository;
         this.tabRepository = tabRepository;
         this.rolesInProjectRepository = rolesInProjectRepository;
+        this.mapper = projectMapper;
     }
 
     @Override
@@ -64,7 +67,7 @@ public class ProjectServiceImpl implements ProjectService {
         // Создаем начальную вкладку проекта
         Tab tab = new Tab();
         tab.setProject(project);
-        tab.setName("Начальная вкладка");
+        tab.setName("Начальная доска");
         tabRepository.save(tab);
 
         return ResponseEntity.ok(project);
@@ -87,7 +90,6 @@ public class ProjectServiceImpl implements ProjectService {
     public ResponseEntity<?> inviteInProject(String username, Long projectId) {
         Project project = repository.findById(projectId).orElse(null);
 
-
         UserInProject invitedUser = new UserInProject();
         invitedUser.setProject(project);
         invitedUser.setUsername(username);
@@ -103,6 +105,14 @@ public class ProjectServiceImpl implements ProjectService {
 
 
         return ResponseEntity.ok(repository.save(project));
+    }
+
+    @Override
+    public ResponseEntity<?> kickedOut(String username, Long projectId) {
+        mapper.deleteUserRolesFromProject(projectId, username);
+        mapper.deleteUserFromProject(projectId, username);
+
+        return ResponseEntity.ok().body("User kicked out");
     }
 
     @Override

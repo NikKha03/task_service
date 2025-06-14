@@ -49,4 +49,8 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 
+    private String tags;
+
+    private String urlsObj;
+
 }

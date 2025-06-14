@@ -27,7 +27,7 @@ public class OriginFilter implements Filter {
 //        }
 
         // На время разработки/тестирования
-        chain.doFilter(request, response); // Если запрос с правильным Origin, пропускаем
+         chain.doFilter(request, response); // Если запрос с правильным Origin, пропускаем
     }
 
     @Override

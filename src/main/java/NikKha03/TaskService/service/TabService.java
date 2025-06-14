@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface TabService {
 
-    Tab findTabById(Long id);
+    ResponseEntity<?> findTabById(Long id);
 
     ResponseEntity<?> createTab(TabRequest request);
 

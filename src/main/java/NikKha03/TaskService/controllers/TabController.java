@@ -1,6 +1,7 @@
 package NikKha03.TaskService.controllers;
 
 import NikKha03.TaskService.DTO.TabRequest;
+import NikKha03.TaskService.model.Tab;
 import NikKha03.TaskService.service.TabService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,11 @@ public class TabController {
 
     public TabController(TabService tabService) {
         this.tabService = tabService;
+    }
+
+    @GetMapping("/get/{tabId}")
+    public ResponseEntity<?> getTabById(@PathVariable("tabId") Long tabId) {
+        return tabService.findTabById(tabId);
     }
 
     @PostMapping("/create")

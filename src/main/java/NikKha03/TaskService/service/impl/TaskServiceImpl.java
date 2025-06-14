@@ -2,9 +2,11 @@ package NikKha03.TaskService.service.impl;
 
 import NikKha03.TaskService.DTO.TaskRequest;
 import NikKha03.TaskService.mappers.TaskMapper;
+import NikKha03.TaskService.model.Project;
 import NikKha03.TaskService.model.Tab;
 import NikKha03.TaskService.model.Task;
 import NikKha03.TaskService.model.TaskStatus;
+import NikKha03.TaskService.repository.ProjectRepository;
 import NikKha03.TaskService.repository.TabRepository;
 import NikKha03.TaskService.repository.TaskRepository;
 import NikKha03.TaskService.service.TaskService;
@@ -29,6 +31,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository repository;
     private final TaskMapper mapper;
 
+    private final ProjectRepository projectRepository;
     private final TabRepository tabRepository;
 
     @Override
@@ -37,14 +40,20 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Map<String, Object> getByTab(Long tabId) {
-        Map<String, Object> response = new HashMap<>();
-        response.put(TaskStatus.AWAITING_COMPLETION.toString(), mapper.getTasksByTabAndStatus(tabId, "AWAITING_COMPLETION"));
-        response.put(TaskStatus.WITHOUT_DATE_IMPL.toString(), mapper.getTasksByTabAndStatus(tabId, "WITHOUT_DATE_IMPL"));
-        response.put(TaskStatus.IN_PROGRESS.toString(), mapper.getTasksByTabAndStatus(tabId, "IN_PROGRESS"));
-        response.put(TaskStatus.COMPLETED.toString(), mapper.getTasksByTabAndStatus(tabId, "COMPLETED"));
-
-        return response;
+    public ResponseEntity<?> getByTab(Long projectId, Long tabId, String username) {
+        Project project = projectRepository.findById(projectId).orElse(null);
+        boolean isMember = !project.getTeam().stream()
+                .filter(member -> member.getUsername().equals(username)).toList().isEmpty();
+        // проверяю является ли пользователь участником проекта по вкладке
+        if (isMember) {
+            Map<String, Object> response = new HashMap<>();
+            response.put(TaskStatus.AWAITING_COMPLETION.toString(), mapper.getTasksByTabAndStatus(tabId, "AWAITING_COMPLETION"));
+            response.put(TaskStatus.WITHOUT_DATE_IMPL.toString(), mapper.getTasksByTabAndStatus(tabId, "WITHOUT_DATE_IMPL"));
+            response.put(TaskStatus.IN_PROGRESS.toString(), mapper.getTasksByTabAndStatus(tabId, "IN_PROGRESS"));
+            response.put(TaskStatus.COMPLETED.toString(), mapper.getTasksByTabAndStatus(tabId, "COMPLETED"));
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.badRequest().body("У вас нет прав на просмотр данной доски!");
     }
 
     @Override
@@ -103,7 +112,10 @@ public class TaskServiceImpl implements TaskService {
                 .setImplementer(request.getImplementer())
                 .setTab(tab)
                 .setCreationDate()
-                .setTaskStatus(request.getTaskStatus());
+                .setTaskStatus(request.getTaskStatus())
+                .setUrlsObj(request.getUrlsObj())
+                .setTag(request.getTags())
+                ;
 
         if (request.getTaskStatus() == TaskStatus.COMPLETED) {
             taskBuilder.setExecutionDate(LocalDateTime.now());
@@ -134,7 +146,10 @@ public class TaskServiceImpl implements TaskService {
         TaskBuilder taskBuilder = new TaskBuilder(task)
                 .setHeader(request.getHeader())
                 .setComment(request.getComment())
-                .setImplementer(request.getImplementer());
+                .setImplementer(request.getImplementer())
+                .setUrlsObj(request.getUrlsObj())
+                .setTag(request.getTags())
+                ;
 
         if (task.getTaskStatus() != TaskStatus.COMPLETED && request.getTaskStatus() == TaskStatus.COMPLETED) {
             taskBuilder.setExecutionDate(LocalDateTime.now());

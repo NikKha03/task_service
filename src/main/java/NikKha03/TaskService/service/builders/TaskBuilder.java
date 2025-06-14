@@ -5,6 +5,7 @@ import NikKha03.TaskService.model.Task;
 import NikKha03.TaskService.model.TaskStatus;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public class TaskBuilder {
     private final Task task;
@@ -61,6 +62,16 @@ public class TaskBuilder {
         task.setTaskStatus(taskStatus);
         return this;
     }
+
+    public TaskBuilder setUrlsObj(String urlsObj) {
+        task.setUrlsObj(urlsObj);
+        return this;
+    }
+    public TaskBuilder setTag(String tag) {
+        task.setTags(tag);
+        return this;
+    }
+
 
     public Task build() {
         return task;

@@ -1,9 +1,12 @@
 package NikKha03.TaskService.DTO;
 
+import NikKha03.TaskService.model.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import NikKha03.TaskService.model.TaskStatus;
+
+import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Setter
@@ -21,6 +24,10 @@ public class TaskRequest {
     private TaskStatus taskStatus;
 
     private String implementer;
+
+    private String urlsObj;
+
+    private String tags;
 
     public TaskRequest() {
     }

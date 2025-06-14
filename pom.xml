@@ -62,6 +62,13 @@
             <version>8.0.0.Final</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.vladmihalcea/hibernate-types-60 -->
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-60</artifactId>
+            <version>2.21.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>

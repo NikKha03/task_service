@@ -17,7 +17,7 @@ public interface TaskService {
 
     Task findTaskById(Long id);
 
-    Map<String, Object> getByTab(Long tabId);
+    ResponseEntity<?> getByTab(Long projectId, Long tabId, String username);
 
     List<Task> getTasksByStatus(String implementer, String status);
 

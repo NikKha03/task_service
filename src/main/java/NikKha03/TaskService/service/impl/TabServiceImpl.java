@@ -19,8 +19,8 @@ public class TabServiceImpl implements TabService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public Tab findTabById(Long id) {
-        return repository.findById(id).orElse(null);
+    public ResponseEntity<?> findTabById(Long id) {
+        return ResponseEntity.ok(repository.findById(id).orElse(null));
     }
 
     @Override
