@@ -21,7 +21,7 @@ public class ProjectOwnerController {
     public void addUser(@RequestBody UserRequest userRequest) {
         User user = new User();
         user.setUsername(userRequest.getUsername());
-        user.setUserId(userRequest.getUserId());
+        user.setKeycloakId(userRequest.getUserId());
         repository.save(user);
     }
 

@@ -7,12 +7,12 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "projects_owners")
+@Table(name = "project_owners")
 public class ProjectOwner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long ownerId;
 
     @OneToMany(mappedBy = "projectOwner")
     private List<Project> projects;

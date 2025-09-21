@@ -1,8 +1,7 @@
 package NikKha03.TaskService.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -12,13 +11,11 @@ import java.util.List;
 @Entity
 public class User extends ProjectOwner {
 
-    // получаю данные пользователя из keycloak
-
     @NotNull
     String username;
 
     @NotNull
-    String userId;
+    String keycloakId;
 
     @ManyToMany(mappedBy = "employees")
     @JsonIgnore()

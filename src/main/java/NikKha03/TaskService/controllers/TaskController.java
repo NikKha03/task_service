@@ -1,6 +1,7 @@
 package NikKha03.TaskService.controllers;
 
 import NikKha03.TaskService.DTO.TaskRequest;
+import NikKha03.TaskService.component.SocketConnectionHandler;
 import NikKha03.TaskService.model.Task;
 import NikKha03.TaskService.model.TaskStatus;
 import NikKha03.TaskService.service.TaskService;
@@ -19,8 +20,11 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    public TaskController(TaskService taskService) {
+    private final SocketConnectionHandler websocket;
+
+    public TaskController(TaskService taskService, SocketConnectionHandler websocket) {
         this.taskService = taskService;
+        this.websocket = websocket;
     }
 
     /*
@@ -33,7 +37,13 @@ public class TaskController {
     @GetMapping("/byTab/{tabId}")
     public ResponseEntity<?> getByTab(@PathVariable("tabId") Long tabId,
                                       @RequestParam("projectId") Long projectId,
-                                      @RequestParam("username") String username) {
+                                      @RequestParam("username") String username,
+                                      @RequestParam("testSocketId") String testSocketId) {
+        try {
+            websocket.handleData(testSocketId, taskService.getByTab(projectId, tabId, username).toString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return taskService.getByTab(projectId, tabId, username);
     }
 

@@ -2,6 +2,7 @@ package NikKha03.TaskService.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.annotation.Reference;
 
 import java.util.List;
 
@@ -10,6 +11,10 @@ public class Company extends ProjectOwner {
 
     @NotNull
     String companyName;
+
+    @NotNull
+    @ManyToOne()
+    ProjectOwner ownerId;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
